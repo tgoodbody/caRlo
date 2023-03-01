@@ -2,7 +2,7 @@
 
 export(iterate_samples)
 export(stats_nested)
-export(stats_summary)
+export(summary_stats)
 export(util_stats)
 export(utils_sample_applied)
 export(utils_sample_bal)
