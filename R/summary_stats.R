@@ -12,14 +12,14 @@
 #' data("samples")
 #'
 #' # compute summary statistics for all numeric columns
-#' stats_summary(samples)
+#' summary_stats(samples)
 #'
 #' # compute summary statistics for specific columns
-#' stats_summary(samples, c("zmean", "zq90"))
+#' summary_stats(samples, c("zmean", "zq90"))
 #'
 #' @export
 
-stats_summary <- function(data,
+summary_stats <- function(data,
                           metrics = NULL,
                           population = FALSE){
 
@@ -73,9 +73,9 @@ stats_summary <- function(data,
 #' Calculate nested summary statistics
 #'
 #' This function takes a data frame and creates a nested data frame by grouping on the columns `nSamp`, `iter`, and `method`.
-#' It then calculates summary statistics for each nested data frame using the `stats_summary` function.
+#' It then calculates summary statistics for each nested data frame using the `summary_stats` function.
 #'
-#' @inheritParams stats_summary
+#' @inheritParams summary_stats
 #'
 #' @return A tibble containing the nested data frames and their corresponding summary statistics.
 #'
@@ -98,7 +98,7 @@ stats_nested <- function(data,
   out <- data %>%
     st_drop_geometry() %>%
     nest(data = c(-nSamp,-iter,-method)) %>%
-    mutate(statistics = future_map(.x = data, .f = ~stats_summary(data = .x, metrics = metrics, population = population)))
+    mutate(statistics = future_map(.x = data, .f = ~summary_stats(data = .x, metrics = metrics, population = population)))
 
   out
 
