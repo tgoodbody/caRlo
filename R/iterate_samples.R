@@ -44,8 +44,8 @@ iterate_samples <- function(data,
   }
 
   # nSamp must be a numeric scalar greater than 0 and less than the number of rows in sample
-  if (!is.numeric(nSamp) || nSamp <= 0 || nSamp >= nrow(data)) {
-    stop("Input 'nSamp' must be a numeric scalar greater than 0 and less than the number of rows in 'sample'.")
+  if (!any(is.numeric(nSamp) || nSamp <= 0 || nSamp >= nrow(data))) {
+    stop("Input 'nSamp' must be a numeric scalar (or vector of numeric scalars) greater than 0 and less than the number of rows in 'sample'.")
   }
 
   # iter must be a numeric scalar greater than 0
@@ -64,10 +64,12 @@ iterate_samples <- function(data,
   iter <- rep(seq(1,iter,1),length(nSamp) / iter)
 
   #--- sample and return output ---#
-  furrr::future_map(.x = c("lhs","srs","lpm"),
+  out <- furrr::future_map(.x = c("lhs","srs","lpm"),
                     .f = ~utils_sample_applied(data = data,
                                                nSamp = nSamp,
                                                iter = iter,
                                                method = .x)) %>%
     bind_rows()
+
+  out
 }

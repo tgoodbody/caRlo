@@ -17,13 +17,15 @@ utils_sample_applied <- function(data,
                          iter,
                          method){
 
-  future_map2(.x = nSamp,
+  out <- future_map2(.x = nSamp,
                      .y = iter,
                      .f = ~utils_sample_methods(data = data,
                                               nSamp = .x,
                                               iter = .y,
                                               method = method)) %>%
     bind_rows()
+
+  out
 
 }
 
@@ -40,10 +42,14 @@ utils_sample_methods <- function(data,
 
   if(method == "lhs"){
 
+    suppressMessages(
+
     out <- sample_existing(existing = data, nSamp = nSamp) %>%
       mutate(iter = iter,
              nSamp = nSamp,
              method = method)
+
+    )
 
   } else if(method == "srs"){
 
@@ -64,6 +70,8 @@ utils_sample_methods <- function(data,
     stop("unknown sampling method provided.")
 
   }
+
+
 
   #--- extract coordinates and bind them to the sampled data ---#
 

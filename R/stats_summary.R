@@ -95,9 +95,11 @@ stats_nested <- function(data,
   #--- globals ---#
   nSamp <- iter <- method <- NULL
 
-  data %>%
+  out <- data %>%
     st_drop_geometry() %>%
     nest(data = c(-nSamp,-iter,-method)) %>%
     mutate(statistics = future_map(.x = data, .f = ~stats_summary(data = .x, metrics = metrics, population = population)))
+
+  out
 
 }
