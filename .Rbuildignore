@@ -1,3 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^GEDIsamp\.Rproj$
+^README\.Rmd$
+^LICENSE\.md$
