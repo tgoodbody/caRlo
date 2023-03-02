@@ -1,6 +1,6 @@
 Package: GEDIsamp
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Ger GEDI data and compare to ALS
+Version: 0.0.1
 Authors@R: c(
     person("Tristan R.H.", "Goodbody", , "goodbody.t@gmail.com", role = c("aut", "cre")),
     person("Christopher W.", "Mulverhill", , "EMAIL", role = c("aut")))

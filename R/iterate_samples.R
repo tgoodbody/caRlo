@@ -31,7 +31,7 @@ iterate_samples <- function(data,
   if (!inherits(data, c("sf", "data.frame"))) {
     stop("Input 'data' must be an 'sf' object.", call. = FALSE)
   } else {
-    if (!inherits(sf::st_geometry(data), "sfc_POINT")) {
+    if (!inherits(st_geometry(data), "sfc_POINT")) {
       stop("'data' must be an 'sf' object of type 'sfc_POINT' geometry.", call. = FALSE)
     }
   }
@@ -64,12 +64,10 @@ iterate_samples <- function(data,
   iter <- rep(seq(1,iter,1),length(nSamp) / iter)
 
   #--- sample and return output ---#
-  out <- furrr::future_map(.x = c("lhs","srs","lpm"),
-                    .f = ~utils_sample_applied(data = data,
-                                               nSamp = nSamp,
-                                               iter = iter,
-                                               method = .x)) %>%
+  future_map(.x = c("lhs","srs","lpm"),
+             .f = ~utils_sample_applied(data = data,
+                                        nSamp = nSamp,
+                                        iter = iter,
+                                        method = .x)) %>%
     bind_rows()
-
-  out
 }

@@ -17,15 +17,14 @@ utils_sample_applied <- function(data,
                          iter,
                          method){
 
-  out <- future_map2(.x = nSamp,
-                     .y = iter,
-                     .f = ~utils_sample_methods(data = data,
-                                              nSamp = .x,
-                                              iter = .y,
-                                              method = method)) %>%
+  future_map2(.x = nSamp,
+              .y = iter,
+              .f = ~utils_sample_methods(data = data,
+                                         nSamp = .x,
+                                         iter = .y,
+                                         method = method)) %>%
     bind_rows()
 
-  out
 
 }
 
@@ -149,7 +148,7 @@ util_stats <- function(metrics,
 #' @return A data.frame containing the sampled rows
 #'
 #' @importFrom SamplingBigData lpm2_kdtree
-#' @export
+
 utils_sample_bal <- function(data,
                              nSamp,
                              p = NULL)

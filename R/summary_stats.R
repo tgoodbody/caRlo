@@ -8,6 +8,9 @@
 #'
 #' @return A tibble object containing the computed summary statistics.
 #'
+#'
+#' @importFrom sf st_geometry st_drop_geometry
+#' @importFrom terra as.data.frame
 #' @examples
 #' data("samples")
 #'
@@ -30,18 +33,18 @@ summary_stats <- function(data,
 
   # if data is a spatRaster convert it to a dataframe and drop all NA values
   if (inherits(data, "SpatRaster")) {
-    data <- terra::as.data.frame(data, na.rm = TRUE)
+    data <- as.data.frame(data, na.rm = TRUE)
   }
 
   # if data is a spatRaster convert it to a dataframe and drop all NA values
   if (is(data, "sf")) {
 
-    if (!inherits(sf::st_geometry(data), "sfc_POINT")) {
+    if (!inherits(st_geometry(data), "sfc_POINT")) {
       stop("'data' must be an 'sf' object of type 'sfc_POINT' geometry.", call. = FALSE)
     }
 
     data <- data %>%
-      sf::st_drop_geometry()
+      st_drop_geometry()
   }
 
   # if metrics is not null check that metrics is a vector of strings that ALL match column names in data
