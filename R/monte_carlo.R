@@ -6,6 +6,7 @@
 #' @param metrics a vector of character strings that match desired column names in \code{data}
 #' @param nSamp a numeric scalar greater than 0 and less than the number of rows in \code{data}
 #' @param iter a numeric scalar greater than 0
+#' @inheritParams utils_sample
 #'
 #' @return a list of sampled datasets
 #'
@@ -16,17 +17,18 @@
 #' @examples
 #' # Iterate over multiple sampling methods and sample sizes for the 'meuse' dataset
 #' data("plots")
-#' iterate_samples <- iterate_samples(data = plots, nSamp = 100, iter = 3)
+#' subsample(data = plots, nSamp = 100, iter = 3)
 #'
 #' @importFrom furrr future_map
 #' @importFrom dplyr bind_rows
 #' @export
 
-iterate_samples <- function(data,
-                            metrics = NULL,
-                            nSamp,
-                            iter){
-
+monte_carlo <- function(data,
+                        metrics = NULL,
+                        nSamp,
+                        iter,
+                        method = NULL,
+                        cores = NULL) {
   # sample must be an sf or dataframe object
   if (!inherits(data, c("sf", "data.frame"))) {
     stop("Input 'data' must be an 'sf' object.", call. = FALSE)
@@ -37,7 +39,7 @@ iterate_samples <- function(data,
   }
 
   # metrics must be a vector of character strings that all match column names in sample
-  if(!is.null(metrics)){
+  if (!is.null(metrics)) {
     if (!all(metrics %in% names(data))) {
       stop("Input 'metrics' must be a vector of character strings that all match column names in 'sample'.")
     }
@@ -61,13 +63,25 @@ iterate_samples <- function(data,
   #--- vectorize nSamp and nRep for sampling ---#
   nSamp <- utils_list_to_vector(nSamp, iter)
 
-  iter <- rep(seq(1,iter,1),length(nSamp) / iter)
+  iter <- rep(seq(1, iter, 1), length(nSamp) / iter)
 
-  #--- sample and return output ---#
-  future_map(.x = c("lhs","srs","lpm"),
-             .f = ~utils_sample_applied(data = data,
-                                        nSamp = nSamp,
-                                        iter = iter,
-                                        method = .x)) %>%
-    bind_rows()
+  #--- parallelize ---#
+  if (!is.null(cores)) {
+    plan(list(
+      tweak(multisession, workers = cores),
+      tweak(multisession, workers = 2)
+    ))
+  }
+
+  #--- apply sampling
+  out <- utils_sample(data = data, nSamp = nSamp, iter = iter, method = method)
+
+  #--- reapply sequential if needed ---#
+  if (!is.null(cores)) {
+
+    plan(sequential)
+
+  }
+
+  return(out)
 }

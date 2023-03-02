@@ -41,7 +41,7 @@ library(GEDIsamp)
 data("plots")
 
 #--- take 50 samples, 5 times for latin hypercube, simple random, balanced sampling methods ---#
-samples <- iterate_samples(plots, nSamp = c(50,100,150), iter = 3)
+samples <- monte_carlo(plots, nSamp = c(50, 100, 150), iter = 3)
 
 #--- calculate statistics ---#
 nested_stats <- stats_nested(samples)

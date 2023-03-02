@@ -24,10 +24,9 @@
 
 summary_stats <- function(data,
                           metrics = NULL,
-                          population = FALSE){
-
+                          population = FALSE) {
   # data must be a spatRaster or dataframe
-  if (!inherits(data, c("SpatRaster", "sf", "data.frame","tibble"))) {
+  if (!inherits(data, c("SpatRaster", "sf", "data.frame", "tibble"))) {
     stop("`data` must be a spatRaster, sf, dataframe, or tibble object.", call. = FALSE)
   }
 
@@ -38,7 +37,6 @@ summary_stats <- function(data,
 
   # if data is a spatRaster convert it to a dataframe and drop all NA values
   if (is(data, "sf")) {
-
     if (!inherits(st_geometry(data), "sfc_POINT")) {
       stop("'data' must be an 'sf' object of type 'sfc_POINT' geometry.", call. = FALSE)
     }
@@ -61,13 +59,12 @@ summary_stats <- function(data,
 
   # if any columns in data are non-numeric, throw an error
   if (any(!sapply(data, is.numeric))) {
-
     numeric_cols <- sapply(data, is.numeric)
     data <- data[, numeric_cols]
     message("`data` contains non-numeric columns - dropping to calculate statistics.")
   }
 
-  result <- util_stats(metric = data, population = population)
+  result <- utils_stats(metric = data, population = population)
 
   # return the result in long format
   return(result)
@@ -93,16 +90,14 @@ summary_stats <- function(data,
 
 stats_nested <- function(data,
                          metrics = NULL,
-                         population = FALSE){
-
+                         population = FALSE) {
   #--- globals ---#
   nSamp <- iter <- method <- NULL
 
   out <- data %>%
     st_drop_geometry() %>%
-    nest(data = c(-nSamp,-iter,-method)) %>%
-    mutate(statistics = future_map(.x = data, .f = ~summary_stats(data = .x, metrics = metrics, population = population)))
+    nest(data = c(-nSamp, -iter, -method)) %>%
+    mutate(statistics = future_map(.x = data, .f = ~ summary_stats(data = .x, metrics = metrics, population = population)))
 
   out
-
 }
