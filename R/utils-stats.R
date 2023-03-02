@@ -64,7 +64,6 @@ utils_stats <- function(metrics,
 #' @export
 
 stdstats <- function(x) {
-
   out <- c(
     min = min(x, na.rm = TRUE),
     mean = mean(x, na.rm = TRUE),

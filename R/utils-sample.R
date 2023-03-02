@@ -12,7 +12,13 @@
 #' @param method The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
 #' "srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.
 #'
+#' @importFrom furrr future_map2
 #' @importFrom furrr future_map
+#' @importFrom sgsR sample_existing
+#' @importFrom dplyr mutate slice_sample
+#' @importFrom sf st_coordinates st_drop_geometry st_coordinates
+#' @importFrom SamplingBigData lpm2_kdtree
+#'
 #' @return A data frame containing the sampled data using each of the three methods.
 #'
 #' @examples
@@ -26,9 +32,9 @@
 #' @export
 
 apply_methods <- function(data, nSamp, iter, method = NULL) {
-
   #--- sample and return output ---#
-  out <- future_map(.x = method,
+  out <- furrr::future_map(
+    .x = method,
     .f = ~ apply_sample(
       data = data,
       nSamp = nSamp,
@@ -41,18 +47,8 @@ apply_methods <- function(data, nSamp, iter, method = NULL) {
   return(out)
 }
 
-#' Apply sampling iteration
-#'
-#' This function samples `nSamp`points `iter` times using either Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Balanced Sampling.
-#'
-#' @inheritParams apply_methods
-#' @importFrom furrr future_map2
-#'
-#' @return A data.frame object containing the sampled points and their attributes, as well as additional columns specifying the iteration number, the number of samples, and the sampling method used.
 #' @export
-
 apply_sample <- function(data, nSamp, iter, method) {
-
   out <- future_map2(
     .x = nSamp,
     .y = iter,
@@ -68,17 +64,12 @@ apply_sample <- function(data, nSamp, iter, method) {
   return(out)
 }
 
-#' Apply sample methods
 
-#' @inheritParams apply_methods
-#' @importFrom sgsR sample_existing
-#' @importFrom dplyr mutate slice_sample %>%
-#' @importFrom sf st_coordinates st_drop_geometry st_coordinates
-
+#' @export
 sample_methods <- function(data,
-                                 nSamp,
-                                 iter,
-                                 method) {
+                           nSamp,
+                           iter,
+                           method) {
   #--- determine method to use ---#
 
   if (method == "lhs") {
@@ -113,16 +104,7 @@ sample_methods <- function(data,
   return(out)
 }
 
-#' Sample balanced subsets of a large dataset
-#'
-#' This function samples a balanced subset of a large dataset using the LPM2 method from the SamplingBigData package.
-#' The method works by dividing the data into cells, and sampling from each cell in proportion to its size.
-#' @inheritParams apply_methods
-#' @param p A vector of probabilities to sample each row. If not provided, it defaults to uniform sampling.
-#' @return A data.frame containing the sampled rows
-#'
-#' @importFrom SamplingBigData lpm2_kdtree
-
+#' @export
 sample_balanced <- function(data,
                             nSamp,
                             p = NULL) {
