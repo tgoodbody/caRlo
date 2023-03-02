@@ -17,7 +17,7 @@
 #' @examples
 #' # Iterate over multiple sampling methods and sample sizes for the 'meuse' dataset
 #' data("plots")
-#' subsample(data = plots, nSamp = 100, iter = 3)
+#' monte_carlo(data = plots, nSamp = 100, iter = 3)
 #'
 #' @importFrom furrr future_map
 #' @importFrom dplyr bind_rows

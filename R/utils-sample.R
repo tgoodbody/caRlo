@@ -53,7 +53,7 @@ apply_methods <- function(data, nSamp, iter, method = NULL) {
 
 apply_sample <- function(data, nSamp, iter, method) {
 
-  out <- furrr::future_map2(
+  out <- future_map2(
     .x = nSamp,
     .y = iter,
     .f = ~ sample_methods(
