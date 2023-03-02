@@ -19,7 +19,7 @@ utils_stats <- function(metrics,
 
   #--- apply standard stats suite ---3
   if (is.null(.f)) {
-    .f <- .standard
+    .f <- stdstats
   }
 
   #--- if population is true dont calculate standard error ---#
@@ -61,10 +61,11 @@ utils_stats <- function(metrics,
 #' \item{80%}{The 80th percentile of \code{x}}
 #' \item{90%}{The 90th percentile of \code{x}}
 #'
-#' @examples
-#' .standard(c(1, 2, 3, 4, 5))
-.standard <- function(x) {
-  c(
+#' @export
+
+stdstats <- function(x) {
+
+  out <- c(
     min = min(x, na.rm = TRUE),
     mean = mean(x, na.rm = TRUE),
     max = max(x, na.rm = TRUE),
@@ -72,4 +73,6 @@ utils_stats <- function(metrics,
     IQR = IQR(x, na.rm = TRUE),
     quantile(x, probs = seq(0.1, 0.9, by = 0.1), na.rm = TRUE)
   )
+
+  return(out)
 }

@@ -3,7 +3,7 @@
 #' This function takes a data frame and performs sampling using three different methods:
 #' latin hypercube sampling (LHS), simple random sampling (SRS),
 #' and Latin pseudo-maximum sampling (LPM).
-#' For each method, it applies the \code{\link{utils_apply_sample()}} function
+#' For each method, it applies the \code{\link{apply_sample()}} function
 #' to the data frame, with the specified number of samples and iterations.
 #'
 #' @param data A data frame to be sampled.
@@ -21,15 +21,15 @@
 #' data <- data.frame(x = rnorm(100), y = rnorm(100))
 #'
 #' # Sample the data using utils_sample()
-#' sampled_data <- utils_sample(data, nSamp = 10, iter = 5)
+#' sampled_data <- apply_methods(data, nSamp = 10, iter = 5)
 #'
 #' @export
 
-utils_sample <- function(data, nSamp, iter, method = NULL) {
+apply_methods <- function(data, nSamp, iter, method = NULL) {
+
   #--- sample and return output ---#
-  out <- future_map(
-    .x = method,
-    .f = ~utils_apply_sample(
+  out <- future_map(.x = method,
+    .f = ~ apply_sample(
       data = data,
       nSamp = nSamp,
       iter = iter,
@@ -41,25 +41,22 @@ utils_sample <- function(data, nSamp, iter, method = NULL) {
   return(out)
 }
 
-#' Sampling of Spatial Data
+#' Apply sampling iteration
 #'
 #' This function samples `nSamp`points `iter` times using either Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Balanced Sampling.
 #'
-#' @inheritParams utils_sample
+#' @inheritParams apply_methods
 #' @importFrom furrr future_map2
 #'
 #' @return A data.frame object containing the sampled points and their attributes, as well as additional columns specifying the iteration number, the number of samples, and the sampling method used.
 #' @export
 
-utils_apply_sample <- function(data,
-                                 nSamp,
-                                 iter,
-                                 method) {
+apply_sample <- function(data, nSamp, iter, method) {
 
   out <- furrr::future_map2(
     .x = nSamp,
     .y = iter,
-    .f = ~ utils_sample_methods(
+    .f = ~ sample_methods(
       data = data,
       nSamp = .x,
       iter = .y,
@@ -71,12 +68,14 @@ utils_apply_sample <- function(data,
   return(out)
 }
 
-#' @inheritParams utils_sample
+#' Apply sample methods
+
+#' @inheritParams apply_methods
 #' @importFrom sgsR sample_existing
 #' @importFrom dplyr mutate slice_sample %>%
 #' @importFrom sf st_coordinates st_drop_geometry st_coordinates
 
-utils_sample_methods <- function(data,
+sample_methods <- function(data,
                                  nSamp,
                                  iter,
                                  method) {
@@ -109,8 +108,6 @@ utils_sample_methods <- function(data,
     stop("unknown sampling method provided.")
   }
 
-
-
   #--- extract coordinates and bind them to the sampled data ---#
 
   return(out)
@@ -120,7 +117,7 @@ utils_sample_methods <- function(data,
 #'
 #' This function samples a balanced subset of a large dataset using the LPM2 method from the SamplingBigData package.
 #' The method works by dividing the data into cells, and sampling from each cell in proportion to its size.
-#' @inheritParams utils_sample
+#' @inheritParams apply_methods
 #' @param p A vector of probabilities to sample each row. If not provided, it defaults to uniform sampling.
 #' @return A data.frame containing the sampled rows
 #'

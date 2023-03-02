@@ -6,7 +6,7 @@
 #' @param metrics a vector of character strings that match desired column names in \code{data}
 #' @param nSamp a numeric scalar greater than 0 and less than the number of rows in \code{data}
 #' @param iter a numeric scalar greater than 0
-#' @inheritParams utils_sample
+#' @inheritParams apply_methods
 #'
 #' @return a list of sampled datasets
 #'
@@ -74,13 +74,11 @@ monte_carlo <- function(data,
   }
 
   #--- apply sampling
-  out <- utils_sample(data = data, nSamp = nSamp, iter = iter, method = method)
+  out <- apply_methods(data = data, nSamp = nSamp, iter = iter, method = method)
 
   #--- reapply sequential if needed ---#
   if (!is.null(cores)) {
-
     plan(sequential)
-
   }
 
   return(out)
