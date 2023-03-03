@@ -9,13 +9,6 @@ reference:
   - "monte_carlo"
   - starts_with("stats_")
   - "bootstrap_stats"
-- title: "Data"
-- contents:
-  - "gedi"
-  - "plots"
-  - "samples"
-  - "stats"
-  - "bootstraps"
 
 authors:
   Tristan RH Goodbody:
