@@ -39,56 +39,53 @@ population <- data.frame(median = 1.1, mean = 2.2)
 ```
 
 ```
-#--- load internal data ---#
-
-plots
-stats
-bootstraps
-
 #--- fake population mean and median ---#
 population <-  data.frame(median = 1.1, mean = 2.2)
 
 #--- piped & parallel ---#
-
 cores <- 5 # number of cores
 iter <- 10 # number of monte carlo simulations per sample size
 
 #--- sample - generate stats - bootstrap stats ---#
-monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
+monte_carlo(caRlo:::plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
   stats_nested(cores = cores) %>%
   bootstrap_stats(., population = population, cores = cores)
 ```
 
 ## Internal data for testing
 ```{r}
-#--- raw plots
-plots <- caRlo:::plots
-gedi <- caRlo:::gedi
+#--- raw plots ALS---#
+caRlo:::plots
+
+#--- raw plots GEDI ---#
+caRlo:::gedi
 
 #--- samples from monte_carlo() ---#
-samples <- caRlo:::samples
+caRlo:::samples
 
-#--- stats from stats_nested() ---#
-stats <- caRlo:::stats
+#--- stats from stats_nested() / stats_summary() ---#
+caRlo:::stats$statistics[1]
 
 #--- boostraps from bootstrap_stats() ---#
-bootstraps <- caRlo:::bootstraps
+caRlo:::bootstraps$bootstrap[1]
 ```
 ```{r}
 #--- sample ---#
-monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores)
+monte_carlo(data = caRlo:::plots, nSamp = c(50, 100, 150), iter = 3, cores = cores)
 
 #--- generate stats ---#
-stats_nested(data = samples, cores = cores)
+stats_nested(data = caRlo:::samples, cores = cores)
+
+#--- summary stats for a dataset - useful for population parameters ---#
+stats_summary(data = caRlo:::plots)
 
 #--- boostrap statistics ---#
-bootstrap_stats(data = stats, population = population, cores = cores)
+bootstrap_stats(data = caRlo:::stats, population = population, cores = cores)
 ```
 
 ## Specify user defined functions for statistics using `.f`
 ```{r}
 #--- function needs to have more than 1 metric to give proper outputs ---#
-
 .f <- function(x) {
   #--- calculate the mean and percent of points less than the mean ---#
   c(
@@ -97,7 +94,7 @@ bootstrap_stats(data = stats, population = population, cores = cores)
   )
 }
 
-s <- stats_nested(data = samples, cores = cores, .f = .f)
+s <- stats_nested(data = caRlo:::samples, cores = cores, .f = .f)
 
 s$statistics[[1]]
 ```
