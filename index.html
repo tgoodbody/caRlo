@@ -76,9 +76,9 @@
 <p>This is a basic example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- load internal data ---#</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"plots"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"samples"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"stats"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>plots</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>stats</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>bootstraps</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--- fake population mean and median ---#</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span>  <span class="fu">data.frame</span>(<span class="at">median =</span> <span class="fl">1.1</span>, <span class="at">mean =</span> <span class="fl">2.2</span>)</span>
@@ -91,36 +91,44 @@
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#--- sample - generate stats - bootstrap stats ---#</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">monte_carlo</span>(plots, <span class="at">nSamp =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">150</span>), <span class="at">iter =</span> <span class="dv">10</span>, <span class="at">cores =</span> cores) <span class="sc">%&gt;%</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stats_nested</span>(<span class="at">cores =</span> cores) <span class="sc">%&gt;%</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_bootstrap</span>(., <span class="at">population =</span> population, <span class="at">cores =</span> cores)</span></code></pre></div>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bootstrap_stats</span>(., <span class="at">population =</span> population, <span class="at">cores =</span> cores)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="internal-data-for-testing">Internal data for testing<a class="anchor" aria-label="anchor" href="#internal-data-for-testing"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- load internals ---#</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"plots"</span>) <span class="co"># plots (`sf` object) to sample from</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"samples"</span>) <span class="co"># `monte_carlo()` output</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"stats"</span>) <span class="co"># `nested_stats()` output</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"bootstraps"</span>) <span class="co"># `sample_bootstrap()` output</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#--- raw plots</span></span>
+<span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu">caRlo</span><span class="fu">:::</span><span class="va">plots</span></span>
+<span><span class="va">gedi</span> <span class="op">&lt;-</span> <span class="fu">caRlo</span><span class="fu">:::</span><span class="va">gedi</span></span>
+<span></span>
+<span><span class="co">#--- samples from monte_carlo() ---#</span></span>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">caRlo</span><span class="fu">:::</span><span class="va">samples</span></span>
+<span></span>
+<span><span class="co">#--- stats from stats_nested() ---#</span></span>
+<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">caRlo</span><span class="fu">:::</span><span class="va"><a href="https://rdrr.io/r/stats/stats-package.html" class="external-link">stats</a></span></span>
+<span></span>
+<span><span class="co">#--- boostraps from bootstrap_stats() ---#</span></span>
+<span><span class="va">bootstraps</span> <span class="op">&lt;-</span> <span class="fu">caRlo</span><span class="fu">:::</span><span class="va">bootstraps</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#--- sample ---#</span></span>
-<span><span class="fu"><a href="reference/monte_carlo.html">monte_carlo</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plots</span>, nSamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span>, iter <span class="op">=</span> <span class="fl">3</span>, cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="reference/monte_carlo.html">monte_carlo</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plots</span>, nSamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span>, iter <span class="op">=</span> <span class="fl">3</span>, cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Simple feature collection with 2700 features and 6 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POINT</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804241.6 ymax: 5283495</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804241.6 ymax: 5283282</span></span>
 <span><span class="co">#&gt; Projected CRS: ETRS89 / UTM zone 32N</span></span>
 <span><span class="co">#&gt; First 10 features:</span></span>
 <span><span class="co">#&gt;    zmean  zq90  lai iter nSamp method                     geom</span></span>
-<span><span class="co">#&gt; 1  14.10 26.09 2.48    1    50    lhs POINT (788229.5 5277319)</span></span>
-<span><span class="co">#&gt; 2  10.06 17.20 3.65    1    50    lhs POINT (788651.8 5278835)</span></span>
-<span><span class="co">#&gt; 3  16.53 27.36 3.94    1    50    lhs POINT (802962.2 5279089)</span></span>
-<span><span class="co">#&gt; 4   1.25  5.17 0.40    1    50    lhs POINT (797800.4 5267878)</span></span>
-<span><span class="co">#&gt; 5  10.29 22.10 2.80    1    50    lhs POINT (787333.8 5276971)</span></span>
-<span><span class="co">#&gt; 6  15.42 30.50 2.92    1    50    lhs POINT (800029.3 5269232)</span></span>
-<span><span class="co">#&gt; 7  13.51 23.61 3.42    1    50    lhs POINT (802008.3 5267834)</span></span>
-<span><span class="co">#&gt; 8   7.48 15.63 2.74    1    50    lhs POINT (798142.4 5274703)</span></span>
-<span><span class="co">#&gt; 9   4.53 11.87 1.65    1    50    lhs POINT (787505.6 5277586)</span></span>
-<span><span class="co">#&gt; 10 14.32 21.27 3.84    1    50    lhs POINT (793165.5 5278302)</span></span>
+<span><span class="co">#&gt; 1   1.47  3.04 0.64    1    50    lhs POINT (796291.6 5268117)</span></span>
+<span><span class="co">#&gt; 2   6.97 17.96 1.79    1    50    lhs POINT (789108.2 5277652)</span></span>
+<span><span class="co">#&gt; 3  19.49 31.08 4.94    1    50    lhs   POINT (801354 5274227)</span></span>
+<span><span class="co">#&gt; 4   7.32 16.66 2.07    1    50    lhs POINT (801516.4 5272321)</span></span>
+<span><span class="co">#&gt; 5  15.01 21.62 4.51    1    50    lhs POINT (801134.4 5277518)</span></span>
+<span><span class="co">#&gt; 6  10.06 17.20 3.65    1    50    lhs POINT (788651.8 5278835)</span></span>
+<span><span class="co">#&gt; 7   3.56 10.17 1.38    1    50    lhs POINT (798963.3 5268920)</span></span>
+<span><span class="co">#&gt; 8   2.81  9.86 0.84    1    50    lhs POINT (792573.6 5271174)</span></span>
+<span><span class="co">#&gt; 9   2.13  6.88 0.91    1    50    lhs POINT (799508.8 5270341)</span></span>
+<span><span class="co">#&gt; 10  0.32  0.71 0.04    1    50    lhs POINT (798180.6 5276603)</span></span>
 <span></span>
 <span><span class="co">#--- generate stats ---#</span></span>
 <span><span class="fu"><a href="reference/stats_nested.html">stats_nested</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">samples</span>, cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span></span>
@@ -144,7 +152,7 @@
 <span><span class="co">#&gt; 15     5    50 lpm    &lt;tibble [50 × 3]&gt; &lt;tibble [42 × 3]&gt;</span></span>
 <span></span>
 <span><span class="co">#--- boostrap statistics ---#</span></span>
-<span><span class="fu"><a href="reference/sample_bootstrap.html">sample_bootstrap</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stats</span>, population <span class="op">=</span> <span class="va">population</span>, cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/bootstrap_stats.html">bootstrap_stats</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stats</span>, population <span class="op">=</span> <span class="va">population</span>, cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 378 × 6</span></span>
 <span><span class="co">#&gt; # Groups:   nSamp, method, statistic, name [378]</span></span>
 <span><span class="co">#&gt;    nSamp method statistic name  data              bootstrap       </span></span>
@@ -168,13 +176,13 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#--- function needs to have more than 1 metric to give proper outputs ---#</span></span>
 <span></span>
-<span><span class="va">.f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
-<span></span>
+<span><span class="va">.f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co">#--- calculate the mean and percent of points less than the mean ---#</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, </span>
-<span>  perc_gr_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="op">}</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    perc_gr_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stats_nested.html">stats_nested</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">samples</span>, cores <span class="op">=</span> <span class="va">cores</span>, .f <span class="op">=</span> <span class="va">.f</span><span class="op">)</span></span>
 <span></span>
@@ -210,7 +218,6 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Tristan R.H. Goodbody <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Christopher W. Mulverhill <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -222,7 +229,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Tristan R.H. Goodbody, Christopher W. Mulverhill.</p>
+<p>Developed by Tristan R.H. Goodbody.</p>
 </div>
 
 <div class="pkgdown-footer-right">

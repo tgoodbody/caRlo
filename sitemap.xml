@@ -31,10 +31,7 @@
     <loc>https://tgoodbody.github.io/caRlo/reference/boot_median.html</loc>
   </url>
   <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/bootstraps.html</loc>
-  </url>
-  <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/gedi.html</loc>
+    <loc>https://tgoodbody.github.io/caRlo/reference/bootstrap_stats.html</loc>
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/index.html</loc>
@@ -43,34 +40,22 @@
     <loc>https://tgoodbody.github.io/caRlo/reference/monte_carlo.html</loc>
   </url>
   <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/plots.html</loc>
-  </url>
-  <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/sample_balanced.html</loc>
   </url>
   <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/sample_bootstrap.html</loc>
-  </url>
-  <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/samples.html</loc>
-  </url>
-  <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/stats.html</loc>
-  </url>
-  <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/stats_nested.html</loc>
+  </url>
+  <url>
+    <loc>https://tgoodbody.github.io/caRlo/reference/stats_summary.html</loc>
+  </url>
+  <url>
+    <loc>https://tgoodbody.github.io/caRlo/reference/stdboot.html</loc>
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/stdmethods.html</loc>
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/stdstats.html</loc>
-  </url>
-  <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/stdsummary.html</loc>
-  </url>
-  <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/summary_stats.html</loc>
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/utils_list_to_vector.html</loc>
