@@ -17,6 +17,8 @@ monte_carlo(data, metrics = NULL, nSamp, iter, method = NULL, cores = NULL)
 
 \item{method}{The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
 "srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.}
+
+\item{cores}{Number of cores to use for parallel computation}
 }
 \value{
 a list of sampled datasets

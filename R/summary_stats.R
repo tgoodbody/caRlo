@@ -8,7 +8,6 @@
 #'
 #' @return A tibble object containing the computed summary statistics.
 #'
-#'
 #' @importFrom sf st_geometry st_drop_geometry
 #' @importFrom terra as.data.frame
 #' @examples
@@ -64,7 +63,7 @@ summary_stats <- function(data,
     message("`data` contains non-numeric columns - dropping to calculate statistics.")
   }
 
-  result <- utils_stats(metric = data, population = population)
+  result <- utils_stats(data = data, population = population)
 
   # return the result in long format
   return(result)
@@ -76,6 +75,7 @@ summary_stats <- function(data,
 #' It then calculates summary statistics for each nested data frame using the `summary_stats` function.
 #'
 #' @inheritParams summary_stats
+#' @inheritParams apply_methods
 #'
 #' @return A tibble containing the nested data frames and their corresponding summary statistics.
 #'
@@ -85,19 +85,56 @@ summary_stats <- function(data,
 #'
 #' @importFrom tidyr nest
 #' @importFrom dplyr select
+#' @importFrom parallel parLapply
 #'
 #' @export
 
 stats_nested <- function(data,
                          metrics = NULL,
-                         population = FALSE) {
+                         cores = NULL) {
   #--- globals ---#
   nSamp <- iter <- method <- NULL
 
-  out <- data %>%
-    st_drop_geometry() %>%
-    nest(data = c(-nSamp, -iter, -method)) %>%
-    mutate(statistics = future_map(.x = data, .f = ~ summary_stats(data = .x, metrics = metrics, population = population)))
+  data <- data %>%
+    st_drop_geometry()
 
-  out
+  # if metrics is not null check that metrics is a vector of strings that ALL match column names in data
+  # if ALL strings do not match throw an error, if all strings do match select those column names from data
+  if (!is.null(metrics)) {
+    if (!is.character(metrics)) {
+      stop("`metrics` must be a vector of character strings.", call. = FALSE)
+    }
+    if (!all(metrics %in% names(data))) {
+      stop("all elements of metrics must match column names in `data`.", call. = FALSE)
+    }
+    data <- data[, c(metrics,"nSamp","iter","method")]
+  }
+
+  if(!is.null(cores)){
+
+    out <- data %>%
+      nest(data = c(-nSamp, -iter, -method))
+
+    x <- out$data
+
+    cl <- makePSOCKcluster(cores)
+    setDefaultCluster(cl)
+    clusterEvalQ(NULL, environment())
+
+    out$statistics <- parLapply(cl = cl, X = x, fun = function(x) summary_stats(data = x))
+
+    # Kill child processes since they are no longer needed
+    stopCluster(cl)
+
+  } else {
+
+    out <- data %>%
+      nest(data = c(-nSamp, -iter, -method)) %>%
+      mutate(statistics = lapply(X = data, FUN = summary_stats))
+
+  }
+
+  return(out)
+
 }
+

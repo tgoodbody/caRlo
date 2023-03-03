@@ -3,17 +3,15 @@
 #' This function takes a data frame and performs sampling using three different methods:
 #' latin hypercube sampling (LHS), simple random sampling (SRS),
 #' and Latin pseudo-maximum sampling (LPM).
-#' For each method, it applies the \code{\link{apply_sample()}} function
-#' to the data frame, with the specified number of samples and iterations.
 #'
 #' @param data A data frame to be sampled.
 #' @param nSamp The number of samples to generate.
 #' @param iter The number of iterations to perform.
 #' @param method The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
 #' "srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.
+#' @param cores Number of cores to use for parallel computation
 #'
-#' @importFrom furrr future_map2
-#' @importFrom furrr future_map
+#' @importFrom parallel makePSOCKcluster setDefaultCluster clusterEvalQ clusterMap stopCluster
 #' @importFrom sgsR sample_existing
 #' @importFrom dplyr mutate slice_sample
 #' @importFrom sf st_coordinates st_drop_geometry st_coordinates
@@ -31,41 +29,36 @@
 #'
 #' @export
 
-apply_methods <- function(data, nSamp, iter, method = NULL) {
-  #--- sample and return output ---#
-  out <- furrr::future_map(
-    .x = method,
-    .f = ~ apply_sample(
-      data = data,
-      nSamp = nSamp,
-      iter = iter,
-      method = .x
-    )
-  ) %>%
-    bind_rows()
+apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
+
+  if(!is.null(cores)){
+  #--- parallelize ---#
+  cl <- makePSOCKcluster(cores)
+  setDefaultCluster(cl)
+  clusterEvalQ(NULL, environment())
+
+  out <- parallel::clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
+
+  # Kill child processes since they are no longer needed
+  stopCluster(cl)
+
+  } else {
+
+    out <- lapply(X = method, FUN = apply_sample, nSamp = nSamp, iter = iter, data = data)
+  }
 
   return(out)
+
 }
 
-#' @export
-apply_sample <- function(data, nSamp, iter, method) {
-  out <- future_map2(
-    .x = nSamp,
-    .y = iter,
-    .f = ~ sample_methods(
-      data = data,
-      nSamp = .x,
-      iter = .y,
-      method = method
-    )
-  ) %>%
-    bind_rows()
+#' @inheritParams apply_methods
+apply_sample <- function(nSamp, iter, method, data) {
 
-  return(out)
+  mapply(FUN = sample_methods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data), SIMPLIFY = FALSE)
+
 }
 
-
-#' @export
+#' @inheritParams apply_methods
 sample_methods <- function(data,
                            nSamp,
                            iter,
@@ -104,7 +97,7 @@ sample_methods <- function(data,
   return(out)
 }
 
-#' @export
+#' @inheritParams apply_methods
 sample_balanced <- function(data,
                             nSamp,
                             p = NULL) {
@@ -131,4 +124,34 @@ sample_balanced <- function(data,
   samples <- data[sampled, ]
 
   return(samples)
+}
+
+#' @export
+
+sample_bootstrap <- function(data,
+                             population,
+                             cores = NULL){
+
+  #### data is a nested dataframe with a nested column called  `statistics`
+
+  # unnest statistics
+  out <- data %>%
+    select(-data,-iter) %>%
+    tidyr::unnest(statistics) %>%
+    dplyr::group_by(nSamp, method, statistic, name) %>%
+    nest()
+
+  x <- out$data
+
+  cl <- makePSOCKcluster(cores)
+  setDefaultCluster(cl)
+  clusterEvalQ(NULL, environment())
+
+  out$statistics <- parLapply(cl = cl, X = x, fun = function(x, population) GEDIsamp::stdsummary(x = x, population = population), population = population)
+
+  # Kill child processes since they are no longer needed
+  stopCluster(cl)
+
+  return(out)
+
 }

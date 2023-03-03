@@ -4,14 +4,14 @@
 \alias{stats_nested}
 \title{Calculate nested summary statistics}
 \usage{
-stats_nested(data, metrics = NULL, population = FALSE)
+stats_nested(data, metrics = NULL, cores = NULL)
 }
 \arguments{
 \item{data}{A data frame containing the data to be summarized}
 
 \item{metrics}{A vector of metric names to be summarized. If \code{NULL}, all numeric columns will be summarized.}
 
-\item{population}{A logical indicating whether the summary statistics should be calculated for the population or just the sample. Default is \code{FALSE}.}
+\item{cores}{Number of cores to use for parallel computation}
 }
 \value{
 A tibble containing the nested data frames and their corresponding summary statistics.

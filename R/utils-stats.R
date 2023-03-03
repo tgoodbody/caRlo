@@ -2,16 +2,17 @@
 #'
 #' Given a data frame, calculates the standard error, minimum, mean, maximum, variance, interquartile range (IQR), and decile quantiles for each column.
 #'
-#' @param metrics A data frame with numeric columns to calculate statistics for.
+#' @param data A data frame with numeric columns to calculate statistics for.
 #' @param population Logical defining whether \code{metrics} is a population. If \code{population = FALSE}
 #' then a standard error will be calculated.
+#' @param .f User-defined function with a single parameters. See \code{stdstats()} for example syntax.
 #' @return A data frame with columns for each calculated statistic, where each row represents a column in the input data frame.
 #' @export
 #'
 #' @examples
 #' data(iris)
 #' utils_stats(iris[, 1:4])
-utils_stats <- function(metrics,
+utils_stats <- function(data,
                         population = FALSE,
                         .f = NULL) {
   #--- globals ---#
@@ -25,10 +26,10 @@ utils_stats <- function(metrics,
   #--- if population is true dont calculate standard error ---#
   if (isTRUE(population)) {
     # for each column calculate the following statistics: standard error, min, mean, max, variance, IQR, 10% quantiles from 10%-90%
-    result <- apply(metrics, MARGIN = 2, FUN = .f)
+    result <- apply(data, MARGIN = 2, FUN = .f)
   } else {
     # for each column calculate the following statistics: standard error, min, mean, max, variance, IQR, 10% quantiles from 10%-90%
-    result <- apply(metrics, MARGIN = 2, FUN = .f)
+    result <- apply(data, MARGIN = 2, FUN = .f)
   }
 
   #--- convert the result to a data frame ---#
@@ -64,6 +65,7 @@ utils_stats <- function(metrics,
 #' @export
 
 stdstats <- function(x) {
+
   out <- c(
     min = min(x, na.rm = TRUE),
     mean = mean(x, na.rm = TRUE),
@@ -75,3 +77,45 @@ stdstats <- function(x) {
 
   return(out)
 }
+
+#' Standard summary
+#' @inheritParams stdstats
+#' @param population dataframe with population statistics
+#'
+#' @importFrom boot boot
+#' @importFrom broom tidy
+#' @export
+
+stdsummary <- function(x,population, R = 10000) {
+
+  x <- dplyr::pull(x)
+
+  bmed <- tidy(boot(x, bootmedian, R, pop = population$median), conf.int = TRUE) %>%
+    mutate(bootstrap = "median")
+
+  bmean <- tidy(boot(x, bootmean, R, pop = population$mean), conf.int = TRUE) %>%
+    mutate(bootstrap = "mean")
+
+  out <- bind_rows(bmed,bmean)
+
+  return(out)
+}
+
+
+bootmedian <- function(x, i, pop){
+
+  sampmed <- median(x[i])
+
+  sampmed - pop
+
+}
+
+
+bootmean <- function(x, i, pop){
+
+  sampmed <- mean(x[i])
+
+  sampmed - pop
+
+}
+

@@ -4,13 +4,15 @@
 \alias{utils_stats}
 \title{Calculate descriptive statistics for each column in a data frame}
 \usage{
-utils_stats(metrics, population = FALSE, .f = NULL)
+utils_stats(data, population = FALSE, .f = NULL)
 }
 \arguments{
-\item{metrics}{A data frame with numeric columns to calculate statistics for.}
+\item{data}{A data frame with numeric columns to calculate statistics for.}
 
 \item{population}{Logical defining whether \code{metrics} is a population. If \code{population = FALSE}
 then a standard error will be calculated.}
+
+\item{.f}{User-defined function with a single parameters. See \code{stdstats()} for example syntax.}
 }
 \value{
 A data frame with columns for each calculated statistic, where each row represents a column in the input data frame.

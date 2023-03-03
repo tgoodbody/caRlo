@@ -4,7 +4,7 @@
 \alias{apply_methods}
 \title{Sample a data frame using different methods}
 \usage{
-apply_methods(data, nSamp, iter, method = NULL)
+apply_methods(data, nSamp, iter, method = NULL, cores = NULL)
 }
 \arguments{
 \item{data}{A data frame to be sampled.}
@@ -15,6 +15,8 @@ apply_methods(data, nSamp, iter, method = NULL)
 
 \item{method}{The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
 "srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.}
+
+\item{cores}{Number of cores to use for parallel computation}
 }
 \value{
 A data frame containing the sampled data using each of the three methods.
@@ -23,8 +25,6 @@ A data frame containing the sampled data using each of the three methods.
 This function takes a data frame and performs sampling using three different methods:
 latin hypercube sampling (LHS), simple random sampling (SRS),
 and Latin pseudo-maximum sampling (LPM).
-For each method, it applies the \code{\link{apply_sample()}} function
-to the data frame, with the specified number of samples and iterations.
 }
 \examples{
 # Generate some random data

@@ -65,21 +65,17 @@ monte_carlo <- function(data,
 
   iter <- rep(seq(1, iter, 1), length(nSamp) / iter)
 
-  #--- parallelize ---#
-  if (!is.null(cores)) {
-    plan(list(
-      tweak(multisession, workers = cores),
-      tweak(multisession, workers = 2)
-    ))
+  #--- add default sampling methods ---#
+  if(is.null(method)){
+
+    method <- c("lhs","srs","lpm")
+
   }
 
   #--- apply sampling
-  out <- apply_methods(data = data, nSamp = nSamp, iter = iter, method = method)
-
-  #--- reapply sequential if needed ---#
-  if (!is.null(cores)) {
-    plan(sequential)
-  }
+  out <- apply_methods(data = data, nSamp = nSamp, iter = iter, method = method, cores = cores) %>%
+    bind_rows()
 
   return(out)
+
 }
