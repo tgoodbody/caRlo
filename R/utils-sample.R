@@ -19,48 +19,47 @@
 #'
 #' @return A data frame containing the sampled data using each of the three methods.
 #'
-#' @examples
-#' # Generate some random data
-#' set.seed(123)
-#' data <- data.frame(x = rnorm(100), y = rnorm(100))
-#'
-#' # Sample the data using utils_sample()
-#' sampled_data <- apply_methods(data, nSamp = 10, iter = 5)
-#'
 #' @export
 
 apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
+  if (!is.null(cores)) {
+    #--- parallelize ---#
+    cl <- makePSOCKcluster(cores)
+    on.exit(stopCluster(cl))
+    setDefaultCluster(cl)
+    clusterEvalQ(NULL, environment())
 
-  if(!is.null(cores)){
-  #--- parallelize ---#
-  cl <- makePSOCKcluster(cores)
-  on.exit(stopCluster(cl))
-  setDefaultCluster(cl)
-  clusterEvalQ(NULL, environment())
-
-  out <- clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
-
+    out <- clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
   } else {
-
     out <- lapply(X = method, FUN = apply_sample, nSamp = nSamp, iter = iter, data = data)
   }
 
   return(out)
-
 }
 
+#' Apply Sampling Methods to Data
+#'
+#' This function applies one of three sampling methods to data: Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Latin Point Mass Sampling (LPM).
+#'
 #' @inheritParams apply_methods
+#'
+#' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
+#' @export
 apply_sample <- function(nSamp, iter, method, data) {
-
-  mapply(FUN = sample_methods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data), SIMPLIFY = FALSE)
-
+  mapply(FUN = stdmethods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data), SIMPLIFY = FALSE)
 }
 
+#' Apply Sampling Method to Data
+#'
+#' This function applies one of three sampling methods to data: Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Latin Point Mass Sampling (LPM).
+#'
 #' @inheritParams apply_methods
-sample_methods <- function(data,
-                           nSamp,
-                           iter,
-                           method) {
+#' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
+#' @export
+stdmethods <- function(data,
+                       nSamp,
+                       iter,
+                       method) {
   #--- determine method to use ---#
 
   if (method == "lhs") {
@@ -95,7 +94,16 @@ sample_methods <- function(data,
   return(out)
 }
 
+#' Balanced sampling
+#'
+#' This function performs Latin Point Mass Sampling (LPM) on data.
+#'
 #' @inheritParams apply_methods
+#'
+#' @param p probability string
+#' @return A data frame containing the sampled data.
+#' @export
+
 sample_balanced <- function(data,
                             nSamp,
                             p = NULL) {

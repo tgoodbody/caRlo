@@ -10,6 +10,8 @@ stdsummary(x, population, R = 10000)
 \item{x}{A numeric vector for which summary statistics are to be computed.}
 
 \item{population}{dataframe with population statistics}
+
+\item{R}{Number of bootstrap iterations}
 }
 \description{
 Standard summary

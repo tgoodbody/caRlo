@@ -8,10 +8,6 @@
 #' @param .f User-defined function with a single parameters. See \code{stdstats()} for example syntax.
 #' @return A data frame with columns for each calculated statistic, where each row represents a column in the input data frame.
 #' @export
-#'
-#' @examples
-#' data(iris)
-#' apply_stats(iris[, 1:4])
 apply_stats <- function(data,
                         population = FALSE,
                         .f = NULL) {
@@ -34,7 +30,7 @@ apply_stats <- function(data,
 
   #--- convert the result to a data frame ---#
   result <- as.data.frame(result) %>%
-    mutate(statistic = rownames(.)) %>%
+    mutate(statistic = rownames()) %>%
     tidyr::pivot_longer(-statistic)
 
   return(result)
@@ -65,7 +61,6 @@ apply_stats <- function(data,
 #' @export
 
 stdstats <- function(x) {
-
   out <- c(
     min = min(x, na.rm = TRUE),
     mean = mean(x, na.rm = TRUE),
@@ -81,13 +76,13 @@ stdstats <- function(x) {
 #' Standard summary
 #' @inheritParams stdstats
 #' @param population dataframe with population statistics
+#' @param R Number of bootstrap iterations
 #'
 #' @importFrom boot boot
 #' @importFrom broom tidy
 #' @export
 
-stdsummary <- function(x,population, R = 10000) {
-
+stdsummary <- function(x, population, R = 10000) {
   x <- dplyr::pull(x)
 
   bmed <- tidy(boot(x, boot_median, R, pop = population$median), conf.int = TRUE) %>%
@@ -96,7 +91,7 @@ stdsummary <- function(x,population, R = 10000) {
   bmean <- tidy(boot(x, boot_mean, R, pop = population$mean), conf.int = TRUE) %>%
     mutate(bootstrap = "mean")
 
-  out <- bind_rows(bmed,bmean)
+  out <- bind_rows(bmed, bmean)
 
   return(out)
 }
@@ -111,18 +106,12 @@ stdsummary <- function(x,population, R = 10000) {
 #'
 #' @return The difference between the median of the current bootstrap sample and the population median.
 #'
-#' @examples
-#' x <- rnorm(100)
-#' boot_median(x, 1:100, median(x))
-#'
 #' @export
 
-boot_median <- function(x, i, pop){
-
+boot_median <- function(x, i, pop) {
   sampmed <- median(x[i])
 
   sampmed - pop
-
 }
 
 #' Bootstrapped difference from population mean
@@ -135,17 +124,10 @@ boot_median <- function(x, i, pop){
 #'
 #' @return The difference between the mean of the current bootstrap sample and the population mean.
 #'
-#' @examples
-#' x <- rnorm(100)
-#' boot_mean(x, 1:100, mean(x))
-#'
 #' @export
 
-boot_mean <- function(x, i, pop){
-
+boot_mean <- function(x, i, pop) {
   sampmed <- mean(x[i])
 
   sampmed - pop
-
 }
-

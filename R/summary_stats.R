@@ -5,19 +5,12 @@
 #' @param data A data frame containing the data to be summarized
 #' @param metrics A vector of metric names to be summarized. If `NULL`, all numeric columns will be summarized.
 #' @param population A logical indicating whether the summary statistics should be calculated for the population or just the sample. Default is `FALSE`.
+#' @param .f Single parameter statistical function to be applied
 #'
 #' @return A tibble object containing the computed summary statistics.
 #'
 #' @importFrom sf st_geometry st_drop_geometry
 #' @importFrom terra as.data.frame
-#' @examples
-#' data("samples")
-#'
-#' # compute summary statistics for all numeric columns
-#' summary_stats(samples)
-#'
-#' # compute summary statistics for specific columns
-#' summary_stats(samples, c("zmean", "zq90"))
 #'
 #' @export
 
@@ -80,10 +73,6 @@ summary_stats <- function(data,
 #'
 #' @return A tibble containing the nested data frames and their corresponding summary statistics.
 #'
-#' @examples
-#' data("samples")
-#' stats_nested(samples, metrics = c("zmean", "zq90"))
-#'
 #' @importFrom tidyr nest
 #' @importFrom dplyr select
 #' @importFrom parallel parLapply
@@ -109,11 +98,10 @@ stats_nested <- function(data,
     if (!all(metrics %in% names(data))) {
       stop("all elements of metrics must match column names in `data`.", call. = FALSE)
     }
-    data <- data[, c(metrics,"nSamp","iter","method")]
+    data <- data[, c(metrics, "nSamp", "iter", "method")]
   }
 
-  if(!is.null(cores)){
-
+  if (!is.null(cores)) {
     out <- data %>%
       nest(data = c(-nSamp, -iter, -method))
 
@@ -124,18 +112,12 @@ stats_nested <- function(data,
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
-    out$statistics <- clusterMap(cl = cl, fun = summary_stats, data = x , MoreArgs = list(.f = .f, metrics = metrics))
-
-
+    out$statistics <- clusterMap(cl = cl, fun = summary_stats, data = x, MoreArgs = list(.f = .f, metrics = metrics))
   } else {
-
     out <- data %>%
       nest(data = c(-nSamp, -iter, -method)) %>%
       mutate(statistics = lapply(X = data, FUN = summary_stats, .f = .f, metrics = metrics))
-
   }
 
   return(out)
-
 }
-

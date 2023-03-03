@@ -16,12 +16,12 @@ Imports:
     boot,
     broom,
     dplyr,
-    furrr,
-    magrittr,
     parallel,
     SamplingBigData,
     sf,
     sgsR,
+    stats,
     terra,
-    tidyr
+    tidyr,
+    utils
 URL: https://tgoodbody.github.io/caRlo/

@@ -12,20 +12,12 @@ summary_stats(data, metrics = NULL, population = FALSE, .f = NULL)
 \item{metrics}{A vector of metric names to be summarized. If \code{NULL}, all numeric columns will be summarized.}
 
 \item{population}{A logical indicating whether the summary statistics should be calculated for the population or just the sample. Default is \code{FALSE}.}
+
+\item{.f}{Single parameter statistical function to be applied}
 }
 \value{
 A tibble object containing the computed summary statistics.
 }
 \description{
 This function computes summary statistics for numeric columns in a SpatRaster or a data.frame. If a list of metrics is specified, it only computes summary statistics for those columns.
-}
-\examples{
-data("samples")
-
-# compute summary statistics for all numeric columns
-summary_stats(samples)
-
-# compute summary statistics for specific columns
-summary_stats(samples, c("zmean", "zq90"))
-
 }

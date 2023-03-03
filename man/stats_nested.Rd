@@ -12,6 +12,8 @@ stats_nested(data, metrics = NULL, cores = NULL, .f = NULL)
 \item{metrics}{A vector of metric names to be summarized. If \code{NULL}, all numeric columns will be summarized.}
 
 \item{cores}{Number of cores to use for parallel computation}
+
+\item{.f}{Single parameter statistical function to be applied}
 }
 \value{
 A tibble containing the nested data frames and their corresponding summary statistics.
@@ -19,9 +21,4 @@ A tibble containing the nested data frames and their corresponding summary stati
 \description{
 This function takes a data frame and creates a nested data frame by grouping on the columns \code{nSamp}, \code{iter}, and \code{method}.
 It then calculates summary statistics for each nested data frame using the \code{summary_stats} function.
-}
-\examples{
-data("samples")
-stats_nested(samples, metrics = c("zmean", "zq90"))
-
 }

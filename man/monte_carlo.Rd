@@ -31,9 +31,3 @@ This function iterates over multiple sampling methods and sample sizes using \co
 The function assumes that users have removed coordinate columns if a \code{data.frame} has been provided.
 Any NA values in \code{data} will be dropped.
 }
-\examples{
-# Iterate over multiple sampling methods and sample sizes for the 'meuse' dataset
-data("plots")
-monte_carlo(data = plots, nSamp = 100, iter = 3)
-
-}

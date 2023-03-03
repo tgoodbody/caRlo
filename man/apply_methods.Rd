@@ -26,12 +26,3 @@ This function takes a data frame and performs sampling using three different met
 latin hypercube sampling (LHS), simple random sampling (SRS),
 and Latin pseudo-maximum sampling (LPM).
 }
-\examples{
-# Generate some random data
-set.seed(123)
-data <- data.frame(x = rnorm(100), y = rnorm(100))
-
-# Sample the data using utils_sample()
-sampled_data <- apply_methods(data, nSamp = 10, iter = 5)
-
-}

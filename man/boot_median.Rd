@@ -19,8 +19,3 @@ The difference between the median of the current bootstrap sample and the popula
 \description{
 This function computes the difference between the median of a given sample and the population median using bootstrapping.
 }
-\examples{
-x <- rnorm(100)
-boot_median(x, 1:100, median(x))
-
-}

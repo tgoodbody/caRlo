@@ -20,7 +20,3 @@ A data frame with columns for each calculated statistic, where each row represen
 \description{
 Given a data frame, calculates the standard error, minimum, mean, maximum, variance, interquartile range (IQR), and decile quantiles for each column.
 }
-\examples{
-data(iris)
-apply_stats(iris[, 1:4])
-}
