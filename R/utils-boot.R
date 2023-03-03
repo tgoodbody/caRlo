@@ -18,6 +18,9 @@ stdboot <- function(x, population, R = 10000) {
 
   out <- bind_rows(bmed, bmean)
 
+  #--- rename to not conflict with other statistic column ---#
+  names(out)[1] <- "bootstat"
+
   return(out)
 }
 
