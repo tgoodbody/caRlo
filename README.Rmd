@@ -32,9 +32,21 @@ devtools::install_github("tgoodbody/GEDIsamp")
 
 This is a basic example which shows you how to solve a common problem:
 
-```
+```{r, echo = FALSE}
 library(GEDIsamp)
+cores <- 5
 
+
+data("plots")
+data("samples")
+data("stats")
+data("bootstraps")
+
+population <-  data.frame(median = 1.1, mean = 2.2)
+
+```
+
+```
 #--- load internal data ---#
 
 data("plots")
@@ -60,13 +72,22 @@ nested <- stats_nested(data = samples, cores = cores)
 bootstraps <- sample_bootstrap(data = stats, population = population, cores = cores)
 
 #--- define functions for new stats ---#
+```
 
-#--- function that calculates the mean and percent of points less than the mean ---#
+## Specify user defined functions for statistics using `.f`
+```{r}
 #--- function needs to have more than 1 metric to give proper outputs ---#
 
-.f <- function(x) c(mean = mean(x), perc_gr_mean = length(x[x < mean(x)])/length(x))
 
-x = stats_nested(data = samples, cores = cores, .f = .f)
+.f <- function(x){
+
+  #--- calculate the mean and percent of points less than the mean ---#
+  c(mean = mean(x), 
+  perc_gr_mean = length(x[x < mean(x)])/length(x))
+
+} 
+
+stats_nested(data = samples, cores = cores, .f = .f)
 
 
 ```
@@ -74,21 +95,11 @@ x = stats_nested(data = samples, cores = cores, .f = .f)
 ## outputs
 
 ```{r}
+#--- using internal data ---#
 
-data("plots")
-data("samples")
-data("stats")
-data("bootstraps")
+monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 2, cores = cores) 
 
-#--- input ---#
-plots[1:5,]
+stats_nested(data = samples, cores = cores)
 
-#--- `monte_carlo()` output ---#
-samples[1:5,]
-
-#--- `stats_nested()` output ---#
-stats[1:5,]
-
-#--- `sample_bootstrap()` output ---#
-bootstraps[1:5,]
+sample_bootstrap(data = stats, population = population, cores = cores)
 ```
