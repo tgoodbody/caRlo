@@ -34,13 +34,11 @@ apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
   if(!is.null(cores)){
   #--- parallelize ---#
   cl <- makePSOCKcluster(cores)
+  on.exit(stopCluster(cl))
   setDefaultCluster(cl)
   clusterEvalQ(NULL, environment())
 
   out <- parallel::clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
-
-  # Kill child processes since they are no longer needed
-  stopCluster(cl)
 
   } else {
 
@@ -143,15 +141,20 @@ sample_bootstrap <- function(data,
 
   x <- out$data
 
-  cl <- makePSOCKcluster(cores)
-  setDefaultCluster(cl)
-  clusterEvalQ(NULL, environment())
+  if(!is.null(cores)){
 
-  out$statistics <- parLapply(cl = cl, X = x, fun = function(x, population) GEDIsamp::stdsummary(x = x, population = population), population = population)
+    cl <- makePSOCKcluster(cores)
+    on.exit(stopCluster(cl))
+    setDefaultCluster(cl)
+    clusterEvalQ(NULL, environment())
 
-  # Kill child processes since they are no longer needed
-  stopCluster(cl)
+    out$bootstrap <- parLapply(cl = cl, X = x, fun = function(x, population) stdsummary(x = x, population = population), population = population)
 
+  } else {
+
+    out$bootstrap <- lapply(X = x, FUN = stdsummary, population = population)
+
+  }
   return(out)
 
 }

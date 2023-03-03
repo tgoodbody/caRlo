@@ -118,13 +118,11 @@ stats_nested <- function(data,
     x <- out$data
 
     cl <- makePSOCKcluster(cores)
+    on.exit(stopCluster(cl))
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
     out$statistics <- parLapply(cl = cl, X = x, fun = function(x) summary_stats(data = x))
-
-    # Kill child processes since they are no longer needed
-    stopCluster(cl)
 
   } else {
 
