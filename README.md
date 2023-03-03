@@ -6,7 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of caRlo is to sample, generate statistics, and plot outputs
+The goal of `caRlo` is to perform monte carlo sampling simulations,
+calculate statistics on sample iterations, bootstrap statistics, and
+visualize statistical outputs.
 
 ## Installation
 
@@ -33,26 +35,87 @@ This is a basic example which shows you how to solve a common problem:
 
     #--- piped & parallel ---#
 
-    cores <- 5
+    cores <- 5 # number of cores
+    iter <- 10 # number of monte carlo simulations per sample size
 
+    #--- sample - generate stats - bootstrap stats ---#
     monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
       stats_nested(cores = cores) %>%
       sample_bootstrap(., population = population, cores = cores)
 
-    #--- internal data for testing ---#
-    samples <- monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores) 
+## Internal data for testing
 
-    nested <- stats_nested(data = samples, cores = cores)
+    #--- load internals ---#
+    data("plots") # plots (`sf` object) to sample from
+    data("samples") # `monte_carlo()` output
+    data("stats") # `nested_stats()` output
+    data("bootstraps") # `sample_bootstrap()` output
 
-    bootstraps <- sample_bootstrap(data = stats, population = population, cores = cores)
+``` r
+#--- sample ---#
+monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores) 
+#> Simple feature collection with 2700 features and 6 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804241.6 ymax: 5283495
+#> Projected CRS: ETRS89 / UTM zone 32N
+#> First 10 features:
+#>    zmean  zq90  lai iter nSamp method                     geom
+#> 1  14.10 26.09 2.48    1    50    lhs POINT (788229.5 5277319)
+#> 2  10.06 17.20 3.65    1    50    lhs POINT (788651.8 5278835)
+#> 3  16.53 27.36 3.94    1    50    lhs POINT (802962.2 5279089)
+#> 4   1.25  5.17 0.40    1    50    lhs POINT (797800.4 5267878)
+#> 5  10.29 22.10 2.80    1    50    lhs POINT (787333.8 5276971)
+#> 6  15.42 30.50 2.92    1    50    lhs POINT (800029.3 5269232)
+#> 7  13.51 23.61 3.42    1    50    lhs POINT (802008.3 5267834)
+#> 8   7.48 15.63 2.74    1    50    lhs POINT (798142.4 5274703)
+#> 9   4.53 11.87 1.65    1    50    lhs POINT (787505.6 5277586)
+#> 10 14.32 21.27 3.84    1    50    lhs POINT (793165.5 5278302)
 
-    #--- define functions for new stats ---#
+#--- generate stats ---#
+stats_nested(data = samples, cores = cores)
+#> # A tibble: 15 × 5
+#>     iter nSamp method data              statistics       
+#>    <dbl> <dbl> <chr>  <list>            <list>           
+#>  1     1    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  2     2    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  3     3    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  4     4    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  5     5    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  6     1    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  7     2    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  8     3    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
+#>  9     4    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
+#> 10     5    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
+#> 11     1    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
+#> 12     2    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
+#> 13     3    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
+#> 14     4    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
+#> 15     5    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
+
+#--- boostrap statistics ---#
+sample_bootstrap(data = stats, population = population, cores = cores)
+#> # A tibble: 378 × 6
+#> # Groups:   nSamp, method, statistic, name [378]
+#>    nSamp method statistic name  data              bootstrap       
+#>    <dbl> <chr>  <chr>     <chr> <list>            <list>          
+#>  1   100 lhs    min       zmean <tibble [20 × 1]> <tibble [2 × 6]>
+#>  2   100 lhs    min       zq90  <tibble [20 × 1]> <tibble [2 × 6]>
+#>  3   100 lhs    min       lai   <tibble [20 × 1]> <tibble [2 × 6]>
+#>  4   100 lhs    mean      zmean <tibble [20 × 1]> <tibble [2 × 6]>
+#>  5   100 lhs    mean      zq90  <tibble [20 × 1]> <tibble [2 × 6]>
+#>  6   100 lhs    mean      lai   <tibble [20 × 1]> <tibble [2 × 6]>
+#>  7   100 lhs    max       zmean <tibble [20 × 1]> <tibble [2 × 6]>
+#>  8   100 lhs    max       zq90  <tibble [20 × 1]> <tibble [2 × 6]>
+#>  9   100 lhs    max       lai   <tibble [20 × 1]> <tibble [2 × 6]>
+#> 10   100 lhs    var       zmean <tibble [20 × 1]> <tibble [2 × 6]>
+#> # … with 368 more rows
+```
 
 ## Specify user defined functions for statistics using `.f`
 
 ``` r
 #--- function needs to have more than 1 metric to give proper outputs ---#
-
 
 .f <- function(x){
 
@@ -74,66 +137,4 @@ s$statistics[[1]]
 #> 4 perc_gr_mean zmean  0.52
 #> 5 perc_gr_mean zq90   0.46
 #> 6 perc_gr_mean lai    0.52
-```
-
-## outputs
-
-``` r
-#--- using internal data ---#
-
-monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 2, cores = cores) 
-#> Simple feature collection with 1800 features and 6 fields
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804241.6 ymax: 5283495
-#> Projected CRS: ETRS89 / UTM zone 32N
-#> First 10 features:
-#>    zmean  zq90  lai iter nSamp method                     geom
-#> 1   7.89 15.06 2.89    1    50    lhs POINT (786560.8 5274454)
-#> 2   1.79  9.87 0.33    1    50    lhs   POINT (802112 5275445)
-#> 3   9.32 20.19 3.07    1    50    lhs POINT (787182.5 5275565)
-#> 4  14.65 25.06 4.87    1    50    lhs   POINT (797791 5273284)
-#> 5   5.47 14.44 1.51    1    50    lhs   POINT (803039 5274805)
-#> 6   1.30  4.07 0.62    1    50    lhs POINT (801968.6 5276545)
-#> 7   3.31  7.18 1.85    1    50    lhs POINT (788615.1 5277535)
-#> 8  11.81 19.83 4.11    1    50    lhs POINT (801402.9 5273410)
-#> 9  10.33 21.76 3.16    1    50    lhs   POINT (795133 5277281)
-#> 10  3.84 11.73 1.05    1    50    lhs POINT (794704.1 5275741)
-
-stats_nested(data = samples, cores = cores)
-#> # A tibble: 15 × 5
-#>     iter nSamp method data              statistics       
-#>    <dbl> <dbl> <chr>  <list>            <list>           
-#>  1     1    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  2     2    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  3     3    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  4     4    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  5     5    50 lhs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  6     1    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  7     2    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  8     3    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
-#>  9     4    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
-#> 10     5    50 srs    <tibble [50 × 3]> <tibble [42 × 3]>
-#> 11     1    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
-#> 12     2    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
-#> 13     3    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
-#> 14     4    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
-#> 15     5    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
-
-sample_bootstrap(data = stats, population = population, cores = cores)
-#> # A tibble: 378 × 6
-#> # Groups:   nSamp, method, statistic, name [378]
-#>    nSamp method statistic name  data              bootstrap       
-#>    <dbl> <chr>  <chr>     <chr> <list>            <list>          
-#>  1   100 lhs    min       zmean <tibble [20 × 1]> <tibble [2 × 6]>
-#>  2   100 lhs    min       zq90  <tibble [20 × 1]> <tibble [2 × 6]>
-#>  3   100 lhs    min       lai   <tibble [20 × 1]> <tibble [2 × 6]>
-#>  4   100 lhs    mean      zmean <tibble [20 × 1]> <tibble [2 × 6]>
-#>  5   100 lhs    mean      zq90  <tibble [20 × 1]> <tibble [2 × 6]>
-#>  6   100 lhs    mean      lai   <tibble [20 × 1]> <tibble [2 × 6]>
-#>  7   100 lhs    max       zmean <tibble [20 × 1]> <tibble [2 × 6]>
-#>  8   100 lhs    max       zq90  <tibble [20 × 1]> <tibble [2 × 6]>
-#>  9   100 lhs    max       lai   <tibble [20 × 1]> <tibble [2 × 6]>
-#> 10   100 lhs    var       zmean <tibble [20 × 1]> <tibble [2 × 6]>
-#> # … with 368 more rows
 ```

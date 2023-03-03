@@ -4,7 +4,6 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -17,7 +16,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of caRlo is to sample, generate statistics, and plot outputs
+The goal of `caRlo` is to perform monte carlo sampling simulations, calculate statistics on sample iterations, bootstrap statistics, and visualize statistical outputs.
 
 ## Installation
 
@@ -35,7 +34,6 @@ This is a basic example which shows you how to solve a common problem:
 ```{r, echo = FALSE}
 library(caRlo)
 cores <- 5
-
 
 data("plots")
 data("samples")
@@ -58,26 +56,38 @@ population <-  data.frame(median = 1.1, mean = 2.2)
 
 #--- piped & parallel ---#
 
-cores <- 5
+cores <- 5 # number of cores
+iter <- 10 # number of monte carlo simulations per sample size
 
+#--- sample - generate stats - bootstrap stats ---#
 monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
   stats_nested(cores = cores) %>%
   sample_bootstrap(., population = population, cores = cores)
+```
 
-#--- internal data for testing ---#
-samples <- monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores) 
+## Internal data for testing
+```
+#--- load internals ---#
+data("plots") # plots (`sf` object) to sample from
+data("samples") # `monte_carlo()` output
+data("stats") # `nested_stats()` output
+data("bootstraps") # `sample_bootstrap()` output
+```
 
-nested <- stats_nested(data = samples, cores = cores)
+```{r}
+#--- sample ---#
+monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores) 
 
-bootstraps <- sample_bootstrap(data = stats, population = population, cores = cores)
+#--- generate stats ---#
+stats_nested(data = samples, cores = cores)
 
-#--- define functions for new stats ---#
+#--- boostrap statistics ---#
+sample_bootstrap(data = stats, population = population, cores = cores)
 ```
 
 ## Specify user defined functions for statistics using `.f`
 ```{r}
 #--- function needs to have more than 1 metric to give proper outputs ---#
-
 
 .f <- function(x){
 
@@ -91,16 +101,4 @@ s <- stats_nested(data = samples, cores = cores, .f = .f)
 
 s$statistics[[1]]
 
-```
-
-## outputs
-
-```{r}
-#--- using internal data ---#
-
-monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 2, cores = cores) 
-
-stats_nested(data = samples, cores = cores)
-
-sample_bootstrap(data = stats, population = population, cores = cores)
 ```
