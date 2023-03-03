@@ -67,6 +67,10 @@ It then calculates summary statistics for each nested data frame using the <code
 <dt>cores</dt>
 <dd><p>Number of cores to use for parallel computation</p></dd>
 
+
+<dt>.f</dt>
+<dd><p>Single parameter statistical function to be applied</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -75,31 +79,6 @@ It then calculates summary statistics for each nested data frame using the <code
 <p>A tibble containing the nested data frames and their corresponding summary statistics.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"samples"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">stats_nested</span><span class="op">(</span><span class="va">samples</span>, metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"zmean"</span>, <span class="st">"zq90"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nSamp  iter method data              statistics       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    50     1 lhs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    50     2 lhs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    50     3 lhs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    50     4 lhs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    50     5 lhs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    50     1 srs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    50     2 srs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    50     3 srs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    50     4 srs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    50     5 srs    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>    50     1 lpm    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>    50     2 lpm    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>    50     3 lpm    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>    50     4 lpm    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>    50     5 lpm    <span style="color: #949494;">&lt;tibble [50 × 2]&gt;</span> <span style="color: #949494;">&lt;tibble [28 × 3]&gt;</span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

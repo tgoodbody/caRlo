@@ -91,31 +91,6 @@ The function assumes that users have removed coordinate columns if a <code>data.
 Any NA values in <code>data</code> will be dropped.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Iterate over multiple sampling methods and sample sizes for the 'meuse' dataset</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"plots"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">monte_carlo</span><span class="op">(</span>data <span class="op">=</span> <span class="va">plots</span>, nSamp <span class="op">=</span> <span class="fl">100</span>, iter <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 900 features and 6 fields</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804221.8 ymax: 5283282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Projected CRS: ETRS89 / UTM zone 32N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> First 10 features:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    zmean  zq90  lai iter nSamp method                     geom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1.06  2.42 0.31    1   100    lhs POINT (796481.5 5267719)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   8.95 19.48 2.74    1   100    lhs POINT (786031.7 5274311)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  19.11 27.22 3.93    1   100    lhs POINT (793258.5 5278410)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   3.22 11.63 0.86    1   100    lhs POINT (787341.3 5274065)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   7.36 15.36 2.63    1   100    lhs POINT (800010.2 5272786)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  15.75 24.01 3.43    1   100    lhs POINT (797220.3 5277658)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   2.28  7.06 0.72    1   100    lhs POINT (803127.9 5277999)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   9.52 18.64 3.34    1   100    lhs POINT (787765.4 5278891)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  11.03 21.53 2.76    1   100    lhs POINT (801976.9 5268830)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  8.74 14.31 4.34    1   100    lhs POINT (795996.7 5278223)</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
