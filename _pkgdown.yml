@@ -4,6 +4,25 @@ url: https://tgoodbody.github.io/caRlo/
 home:
   title: caRlo
 reference:
+- title: "Principal functions"
+- contents:
+  - "monte_carlo"
+  - starts_with("stats_")
+  - "bootstrap_stats"
+- title: "Internals"
+- contents:
+  - starts_with("apply_")
+  - "bootstrap_stats"
+- title: "Data"
+- contents:
+  - "gedi"
+  - "plots"
+  - "samples"
+  - "stats"
+  - "bootstraps"
+  - starts_with("apply_")
+  - starts_with("std")
+  - starts_with("boot_")
 
 authors:
   Tristan RH Goodbody:

@@ -18,9 +18,6 @@
 #' @importFrom SamplingBigData lpm2_kdtree
 #'
 #' @return A data frame containing the sampled data using each of the three methods.
-#'
-#' @export
-
 apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
   if (!is.null(cores)) {
     #--- parallelize ---#
@@ -44,7 +41,6 @@ apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
 #' @inheritParams apply_methods
 #'
 #' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
-#' @export
 apply_sample <- function(nSamp, iter, method, data) {
   mapply(FUN = stdmethods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data), SIMPLIFY = FALSE)
 }
@@ -55,7 +51,6 @@ apply_sample <- function(nSamp, iter, method, data) {
 #'
 #' @inheritParams apply_methods
 #' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
-#' @export
 stdmethods <- function(data,
                        nSamp,
                        iter,
@@ -102,7 +97,6 @@ stdmethods <- function(data,
 #'
 #' @param p probability string
 #' @return A data frame containing the sampled data.
-#' @export
 
 sample_balanced <- function(data,
                             nSamp,

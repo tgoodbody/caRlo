@@ -14,8 +14,7 @@
 #'
 #'
 #' @export
-
-sample_bootstrap <- function(data,
+bootstrap_stats <- function(data,
                              population,
                              cores = NULL,
                              R = 10000) {
@@ -38,9 +37,9 @@ sample_bootstrap <- function(data,
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
-    out$bootstrap <- clusterMap(cl = cl, fun = stdsummary, x = x, MoreArgs = list(population = population, R = R))
+    out$bootstrap <- clusterMap(cl = cl, fun = stdboot, x = x, MoreArgs = list(population = population, R = R))
   } else {
-    out$bootstrap <- lapply(X = x, FUN = stdsummary, population = population)
+    out$bootstrap <- lapply(X = x, FUN = stdboot, population = population)
   }
   return(out)
 }

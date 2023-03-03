@@ -41,7 +41,7 @@ This is a basic example which shows you how to solve a common problem:
     #--- sample - generate stats - bootstrap stats ---#
     monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
       stats_nested(cores = cores) %>%
-      sample_bootstrap(., population = population, cores = cores)
+      bootstrap_stats(., population = population, cores = cores)
 
 ## Internal data for testing
 
@@ -49,7 +49,7 @@ This is a basic example which shows you how to solve a common problem:
     data("plots") # plots (`sf` object) to sample from
     data("samples") # `monte_carlo()` output
     data("stats") # `nested_stats()` output
-    data("bootstraps") # `sample_bootstrap()` output
+    data("bootstraps") # `bootstrap_stats()` output
 
 ``` r
 #--- sample ---#
@@ -94,7 +94,7 @@ stats_nested(data = samples, cores = cores)
 #> 15     5    50 lpm    <tibble [50 × 3]> <tibble [42 × 3]>
 
 #--- boostrap statistics ---#
-sample_bootstrap(data = stats, population = population, cores = cores)
+bootstrap_stats(data = stats, population = population, cores = cores)
 #> # A tibble: 378 × 6
 #> # Groups:   nSamp, method, statistic, name [378]
 #>    nSamp method statistic name  data              bootstrap       

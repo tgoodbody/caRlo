@@ -61,7 +61,7 @@ iter <- 10 # number of monte carlo simulations per sample size
 #--- sample - generate stats - bootstrap stats ---#
 monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
   stats_nested(cores = cores) %>%
-  sample_bootstrap(., population = population, cores = cores)
+  bootstrap_stats(., population = population, cores = cores)
 ```
 
 ## Internal data for testing
@@ -70,7 +70,7 @@ monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
 data("plots") # plots (`sf` object) to sample from
 data("samples") # `monte_carlo()` output
 data("stats") # `nested_stats()` output
-data("bootstraps") # `sample_bootstrap()` output
+data("bootstraps") # `bootstrap_stats()` output
 ```
 
 ```{r}
@@ -81,7 +81,7 @@ monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores)
 stats_nested(data = samples, cores = cores)
 
 #--- boostrap statistics ---#
-sample_bootstrap(data = stats, population = population, cores = cores)
+bootstrap_stats(data = stats, population = population, cores = cores)
 ```
 
 ## Specify user defined functions for statistics using `.f`
