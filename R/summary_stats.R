@@ -64,7 +64,7 @@ summary_stats <- function(data,
     message("`data` contains non-numeric columns - dropping to calculate statistics.")
   }
 
-  result <- utils_stats(data = data, population = population, .f = .f)
+  result <- apply_stats(data = data, population = population, .f = .f)
 
   # return the result in long format
   return(result)

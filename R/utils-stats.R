@@ -11,8 +11,8 @@
 #'
 #' @examples
 #' data(iris)
-#' utils_stats(iris[, 1:4])
-utils_stats <- function(data,
+#' apply_stats(iris[, 1:4])
+apply_stats <- function(data,
                         population = FALSE,
                         .f = NULL) {
   #--- globals ---#
@@ -90,10 +90,10 @@ stdsummary <- function(x,population, R = 10000) {
 
   x <- dplyr::pull(x)
 
-  bmed <- tidy(boot(x, bootmedian, R, pop = population$median), conf.int = TRUE) %>%
+  bmed <- tidy(boot(x, boot_median, R, pop = population$median), conf.int = TRUE) %>%
     mutate(bootstrap = "median")
 
-  bmean <- tidy(boot(x, bootmean, R, pop = population$mean), conf.int = TRUE) %>%
+  bmean <- tidy(boot(x, boot_mean, R, pop = population$mean), conf.int = TRUE) %>%
     mutate(bootstrap = "mean")
 
   out <- bind_rows(bmed,bmean)
@@ -101,8 +101,23 @@ stdsummary <- function(x,population, R = 10000) {
   return(out)
 }
 
+#' Bootstrapped difference from population median
+#'
+#' This function computes the difference between the median of a given sample and the population median using bootstrapping.
+#'
+#' @param x A vector of numerical values.
+#' @param i A vector of indices specifying the current bootstrap sample.
+#' @param pop The population median to compare to.
+#'
+#' @return The difference between the median of the current bootstrap sample and the population median.
+#'
+#' @examples
+#' x <- rnorm(100)
+#' boot_median(x, 1:100, median(x))
+#'
+#' @export
 
-bootmedian <- function(x, i, pop){
+boot_median <- function(x, i, pop){
 
   sampmed <- median(x[i])
 
@@ -110,8 +125,23 @@ bootmedian <- function(x, i, pop){
 
 }
 
+#' Bootstrapped difference from population mean
+#'
+#' This function computes the difference between the mean of a given sample and the population mean using bootstrapping.
+#'
+#' @param x A vector of numerical values.
+#' @param i A vector of indices specifying the current bootstrap sample.
+#' @param pop The population mean to compare to.
+#'
+#' @return The difference between the mean of the current bootstrap sample and the population mean.
+#'
+#' @examples
+#' x <- rnorm(100)
+#' boot_mean(x, 1:100, mean(x))
+#'
+#' @export
 
-bootmean <- function(x, i, pop){
+boot_mean <- function(x, i, pop){
 
   sampmed <- mean(x[i])
 

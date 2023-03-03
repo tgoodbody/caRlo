@@ -123,38 +123,3 @@ sample_balanced <- function(data,
 
   return(samples)
 }
-
-#' @export
-
-sample_bootstrap <- function(data,
-                             population,
-                             cores = NULL){
-
-  #### data is a nested dataframe with a nested column called  `statistics`
-
-  # unnest statistics
-  out <- data %>%
-    select(-data,-iter) %>%
-    tidyr::unnest(statistics) %>%
-    dplyr::group_by(nSamp, method, statistic, name) %>%
-    nest()
-
-  x <- out$data
-
-  if(!is.null(cores)){
-
-    cl <- makePSOCKcluster(cores)
-    on.exit(stopCluster(cl))
-    setDefaultCluster(cl)
-    clusterEvalQ(NULL, environment())
-
-    out$bootstrap <- clusterMap(cl = cl, fun = stdsummary, x = x, MoreArgs = list(population = population))
-
-  } else {
-
-    out$bootstrap <- lapply(X = x, FUN = stdsummary, population = population)
-
-  }
-  return(out)
-
-}
