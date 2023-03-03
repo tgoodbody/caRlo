@@ -59,6 +59,16 @@ nested <- stats_nested(data = samples, cores = cores)
 
 bootstraps <- sample_bootstrap(data = stats, population = population, cores = cores)
 
+#--- define functions for new stats ---#
+
+#--- function that calculates the mean and percent of points less than the mean ---#
+#--- function needs to have more than 1 metric to give proper outputs ---#
+
+.f <- function(x) c(mean = mean(x), perc_gr_mean = length(x[x < mean(x)])/length(x))
+
+x = stats_nested(data = samples, cores = cores, .f = .f)
+
+
 ```
 
 ## outputs

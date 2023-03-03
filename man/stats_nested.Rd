@@ -4,7 +4,7 @@
 \alias{stats_nested}
 \title{Calculate nested summary statistics}
 \usage{
-stats_nested(data, metrics = NULL, cores = NULL)
+stats_nested(data, metrics = NULL, cores = NULL, .f = NULL)
 }
 \arguments{
 \item{data}{A data frame containing the data to be summarized}

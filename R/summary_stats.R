@@ -23,7 +23,8 @@
 
 summary_stats <- function(data,
                           metrics = NULL,
-                          population = FALSE) {
+                          population = FALSE,
+                          .f = NULL) {
   # data must be a spatRaster or dataframe
   if (!inherits(data, c("SpatRaster", "sf", "data.frame", "tibble"))) {
     stop("`data` must be a spatRaster, sf, dataframe, or tibble object.", call. = FALSE)
@@ -63,7 +64,7 @@ summary_stats <- function(data,
     message("`data` contains non-numeric columns - dropping to calculate statistics.")
   }
 
-  result <- utils_stats(data = data, population = population)
+  result <- utils_stats(data = data, population = population, .f = .f)
 
   # return the result in long format
   return(result)
@@ -91,7 +92,8 @@ summary_stats <- function(data,
 
 stats_nested <- function(data,
                          metrics = NULL,
-                         cores = NULL) {
+                         cores = NULL,
+                         .f = NULL) {
   #--- globals ---#
   nSamp <- iter <- method <- NULL
 
@@ -122,13 +124,14 @@ stats_nested <- function(data,
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
-    out$statistics <- parLapply(cl = cl, X = x, fun = function(x) summary_stats(data = x))
+    out$statistics <- clusterMap(cl = cl, fun = summary_stats, data = x , MoreArgs = list(.f = .f, metrics = metrics))
+
 
   } else {
 
     out <- data %>%
       nest(data = c(-nSamp, -iter, -method)) %>%
-      mutate(statistics = lapply(X = data, FUN = summary_stats))
+      mutate(statistics = lapply(X = data, FUN = summary_stats, .f = .f, metrics = metrics))
 
   }
 

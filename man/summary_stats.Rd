@@ -4,7 +4,7 @@
 \alias{summary_stats}
 \title{Compute Summary Statistics}
 \usage{
-summary_stats(data, metrics = NULL, population = FALSE)
+summary_stats(data, metrics = NULL, population = FALSE, .f = NULL)
 }
 \arguments{
 \item{data}{A data frame containing the data to be summarized}

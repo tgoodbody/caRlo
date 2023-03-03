@@ -38,7 +38,7 @@ apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
   setDefaultCluster(cl)
   clusterEvalQ(NULL, environment())
 
-  out <- parallel::clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
+  out <- clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
 
   } else {
 
@@ -148,7 +148,7 @@ sample_bootstrap <- function(data,
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
-    out$bootstrap <- parLapply(cl = cl, X = x, fun = function(x, population) stdsummary(x = x, population = population), population = population)
+    out$bootstrap <- clusterMap(cl = cl, fun = stdsummary, x = x, MoreArgs = list(population = population))
 
   } else {
 
