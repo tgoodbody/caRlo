@@ -4,12 +4,11 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
 ```
 
@@ -33,7 +32,7 @@ devtools::install_github("tgoodbody/GEDIsamp")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```
 library(GEDIsamp)
 
 #--- load internal data ---#
@@ -45,14 +44,6 @@ data("stats")
 #--- fake population mean and median ---#
 population <-  data.frame(median = 1.1, mean = 2.2)
 
-#--- take 50 samples, 5 times for latin hypercube, simple random, balanced sampling methods ---#
-samples <- monte_carlo(plots, nSamp = c(50, 100, 150), iter = 3) 
-
-nested <- stats_nested(data = samples)
-
-#--- slow when not using parallel - `cores` parameter ---#
-bootstraps <- sample_bootstrap(data = nested, population = population)
-
 #--- piped & parallel ---#
 
 cores <- 5
@@ -61,12 +52,33 @@ monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
   stats_nested(cores = cores) %>%
   sample_bootstrap(., population = population, cores = cores)
 
-
-#--- iternal data for testing ---#
+#--- internal data for testing ---#
 samples <- monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores) 
 
 nested <- stats_nested(data = samples, cores = cores)
 
 bootstraps <- sample_bootstrap(data = stats, population = population, cores = cores)
 
+```
+
+## outputs
+
+```{r}
+
+data("plots")
+data("samples")
+data("stats")
+data("bootstraps")
+
+#--- input ---#
+plots[1:5,]
+
+#--- `monte_carlo()` output ---#
+samples[1:5,]
+
+#--- `stats_nested()` output ---#
+stats[1:5,]
+
+#--- `sample_bootstrap()` output ---#
+bootstraps[1:5,]
 ```
