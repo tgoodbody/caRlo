@@ -6,13 +6,16 @@
 #' @param population Logical defining whether \code{metrics} is a population. If \code{population = FALSE}
 #' then a standard error will be calculated.
 #' @param .f User-defined function with a single parameters. See \code{stdstats()} for example syntax.
+#'
+#' @keywords internal
+#'
 #' @return A data frame with columns for each calculated statistic, where each row represents a column in the input data frame.
 #' @export
 apply_stats <- function(data,
                         population = FALSE,
                         .f = NULL) {
   #--- globals ---#
-  statistic <- NULL
+  statistic <- . <- NULL
 
   #--- apply standard stats suite ---3
   if (is.null(.f)) {
@@ -30,7 +33,7 @@ apply_stats <- function(data,
 
   #--- convert the result to a data frame ---#
   result <- as.data.frame(result) %>%
-    mutate(statistic = rownames()) %>%
+    mutate(statistic = rownames(.)) %>%
     tidyr::pivot_longer(-statistic)
 
   return(result)
@@ -41,6 +44,8 @@ apply_stats <- function(data,
 #' This function computes standard summary statistics for a numeric vector, including minimum, mean, maximum, variance, interquartile range (IQR), and quantiles at 10% intervals between 10% and 90%.
 #'
 #' @param x A numeric vector for which summary statistics are to be computed.
+#'
+#' @keywords internal
 #'
 #' @return A named numeric vector with the following components:
 #' \item{min}{The minimum value of \code{x}}

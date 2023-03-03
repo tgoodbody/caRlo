@@ -19,3 +19,4 @@ The difference between the mean of the current bootstrap sample and the populati
 \description{
 This function computes the difference between the mean of a given sample and the population mean using bootstrapping.
 }
+\keyword{internal}

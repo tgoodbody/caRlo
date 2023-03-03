@@ -22,3 +22,4 @@ A data frame containing the sampled data, the iteration number, the number of sa
 \description{
 This function applies one of three sampling methods to data: Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Latin Point Mass Sampling (LPM).
 }
+\keyword{internal}

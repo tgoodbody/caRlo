@@ -15,6 +15,7 @@
 #' Any NA values in \code{data} will be dropped.
 #'
 #' @importFrom dplyr bind_rows "%>%"
+#' @importFrom methods is
 #' @export
 
 monte_carlo <- function(data,
@@ -60,10 +61,8 @@ monte_carlo <- function(data,
   iter <- rep(seq(1, iter, 1), length(nSamp) / iter)
 
   #--- add default sampling methods ---#
-  if(is.null(method)){
-
-    method <- c("lhs","srs","lpm")
-
+  if (is.null(method)) {
+    method <- c("lhs", "srs", "lpm")
   }
 
   #--- apply sampling
@@ -71,5 +70,4 @@ monte_carlo <- function(data,
     bind_rows()
 
   return(out)
-
 }

@@ -29,3 +29,4 @@ A named numeric vector with the following components:
 \description{
 This function computes standard summary statistics for a numeric vector, including minimum, mean, maximum, variance, interquartile range (IQR), and quantiles at 10\% intervals between 10\% and 90\%.
 }
+\keyword{internal}

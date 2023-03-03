@@ -35,20 +35,15 @@ This is a basic example which shows you how to solve a common problem:
 library(caRlo)
 cores <- 5
 
-data("plots")
-data("samples")
-data("stats")
-data("bootstraps")
-
 population <- data.frame(median = 1.1, mean = 2.2)
 ```
 
 ```
 #--- load internal data ---#
 
-data("plots")
-data("samples")
-data("stats")
+plots
+stats
+bootstraps
 
 #--- fake population mean and median ---#
 population <-  data.frame(median = 1.1, mean = 2.2)
@@ -65,14 +60,20 @@ monte_carlo(plots, nSamp = c(50, 100, 150), iter = 10, cores = cores) %>%
 ```
 
 ## Internal data for testing
-```
-#--- load internals ---#
-data("plots") # plots (`sf` object) to sample from
-data("samples") # `monte_carlo()` output
-data("stats") # `nested_stats()` output
-data("bootstraps") # `bootstrap_stats()` output
-```
+```{r}
+#--- raw plots
+plots <- caRlo:::plots
+gedi <- caRlo:::gedi
 
+#--- samples from monte_carlo() ---#
+samples <- caRlo:::samples
+
+#--- stats from stats_nested() ---#
+stats <- caRlo:::stats
+
+#--- boostraps from bootstrap_stats() ---#
+bootstraps <- caRlo:::bootstraps
+```
 ```{r}
 #--- sample ---#
 monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores)

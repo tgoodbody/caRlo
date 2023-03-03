@@ -3,6 +3,8 @@
 #' @param population dataframe with population statistics
 #' @param R Number of bootstrap iterations
 #'
+#' @keywords internal
+#'
 #' @importFrom boot boot
 #' @importFrom broom tidy
 stdboot <- function(x, population, R = 10000) {
@@ -27,6 +29,8 @@ stdboot <- function(x, population, R = 10000) {
 #' @param i A vector of indices specifying the current bootstrap sample.
 #' @param pop The population median to compare to.
 #'
+#' @keywords internal
+#'
 #' @return The difference between the median of the current bootstrap sample and the population median.
 boot_median <- function(x, i, pop) {
   sampmed <- median(x[i])
@@ -41,6 +45,8 @@ boot_median <- function(x, i, pop) {
 #' @param x A vector of numerical values.
 #' @param i A vector of indices specifying the current bootstrap sample.
 #' @param pop The population mean to compare to.
+#'
+#' @keywords internal
 #'
 #' @return The difference between the mean of the current bootstrap sample and the population mean.
 boot_mean <- function(x, i, pop) {

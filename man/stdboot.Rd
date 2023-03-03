@@ -16,3 +16,4 @@ stdboot(x, population, R = 10000)
 \description{
 Standard summary
 }
+\keyword{internal}

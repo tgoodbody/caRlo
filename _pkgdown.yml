@@ -9,10 +9,6 @@ reference:
   - "monte_carlo"
   - starts_with("stats_")
   - "bootstrap_stats"
-- title: "Internals"
-- contents:
-  - starts_with("apply_")
-  - "bootstrap_stats"
 - title: "Data"
 - contents:
   - "gedi"
@@ -20,14 +16,10 @@ reference:
   - "samples"
   - "stats"
   - "bootstraps"
-  - starts_with("apply_")
-  - starts_with("std")
-  - starts_with("boot_")
 
 authors:
   Tristan RH Goodbody:
     href: "https://scholar.google.ca/citations?user=C_qdYDsAAAAJ&hl=en"
-  Christopher W. Mulverhill:
 
 code:
   width: 72

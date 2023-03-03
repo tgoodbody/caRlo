@@ -19,3 +19,4 @@ A data frame containing the sampled data.
 \description{
 This function performs Latin Point Mass Sampling (LPM) on data.
 }
+\keyword{internal}

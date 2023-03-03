@@ -4,6 +4,8 @@
 #'
 #' @param nSamp Vector of desired sample sizes
 #' @param iter Desired number of iterations
+#'
+#' @keywords internal
 #' @return A vector for each \code{nSamp} of length \code{iter}
 
 #--- list from vector for number of samples and iterations ---#

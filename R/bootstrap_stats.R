@@ -15,9 +15,9 @@
 #'
 #' @export
 bootstrap_stats <- function(data,
-                             population,
-                             cores = NULL,
-                             R = 10000) {
+                            population,
+                            cores = NULL,
+                            R = 10000) {
   iter <- statistics <- nSamp <- method <- statistic <- name <- NULL
 
   #### data is a nested dataframe with a nested column called  `statistics`

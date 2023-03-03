@@ -17,3 +17,4 @@ A vector for each \code{nSamp} of length \code{iter}
 \description{
 This function takes a list of values and repeats each value a specified number of times to create a vector.
 }
+\keyword{internal}

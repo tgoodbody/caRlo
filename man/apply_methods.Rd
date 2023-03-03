@@ -26,3 +26,4 @@ This function takes a data frame and performs sampling using three different met
 latin hypercube sampling (LHS), simple random sampling (SRS),
 and Latin pseudo-maximum sampling (LPM).
 }
+\keyword{internal}

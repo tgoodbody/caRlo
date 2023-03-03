@@ -11,6 +11,8 @@
 #' "srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.
 #' @param cores Number of cores to use for parallel computation
 #'
+#' @keywords internal
+#'
 #' @importFrom parallel makePSOCKcluster setDefaultCluster clusterEvalQ clusterMap stopCluster
 #' @importFrom sgsR sample_existing
 #' @importFrom dplyr mutate slice_sample
@@ -40,6 +42,8 @@ apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
 #'
 #' @inheritParams apply_methods
 #'
+#' @keywords internal
+#'
 #' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
 apply_sample <- function(nSamp, iter, method, data) {
   mapply(FUN = stdmethods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data), SIMPLIFY = FALSE)
@@ -50,6 +54,9 @@ apply_sample <- function(nSamp, iter, method, data) {
 #' This function applies one of three sampling methods to data: Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Latin Point Mass Sampling (LPM).
 #'
 #' @inheritParams apply_methods
+#'
+#' @keywords internal
+#'
 #' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
 stdmethods <- function(data,
                        nSamp,
@@ -94,6 +101,8 @@ stdmethods <- function(data,
 #' This function performs Latin Point Mass Sampling (LPM) on data.
 #'
 #' @inheritParams apply_methods
+#'
+#' @keywords internal
 #'
 #' @param p probability string
 #' @return A data frame containing the sampled data.

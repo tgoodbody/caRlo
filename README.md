@@ -26,9 +26,9 @@ This is a basic example which shows you how to solve a common problem:
 
     #--- load internal data ---#
 
-    data("plots")
-    data("samples")
-    data("stats")
+    plots
+    stats
+    bootstraps
 
     #--- fake population mean and median ---#
     population <-  data.frame(median = 1.1, mean = 2.2)
@@ -45,32 +45,41 @@ This is a basic example which shows you how to solve a common problem:
 
 ## Internal data for testing
 
-    #--- load internals ---#
-    data("plots") # plots (`sf` object) to sample from
-    data("samples") # `monte_carlo()` output
-    data("stats") # `nested_stats()` output
-    data("bootstraps") # `bootstrap_stats()` output
+``` r
+#--- raw plots
+plots <- caRlo:::plots
+gedi <- caRlo:::gedi
+
+#--- samples from monte_carlo() ---#
+samples <- caRlo:::samples
+
+#--- stats from stats_nested() ---#
+stats <- caRlo:::stats
+
+#--- boostraps from bootstrap_stats() ---#
+bootstraps <- caRlo:::bootstraps
+```
 
 ``` r
 #--- sample ---#
-monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores) 
+monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 3, cores = cores)
 #> Simple feature collection with 2700 features and 6 fields
 #> Geometry type: POINT
 #> Dimension:     XY
-#> Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804241.6 ymax: 5283495
+#> Bounding box:  xmin: 784680.6 ymin: 5266360 xmax: 804241.6 ymax: 5283282
 #> Projected CRS: ETRS89 / UTM zone 32N
 #> First 10 features:
 #>    zmean  zq90  lai iter nSamp method                     geom
-#> 1  14.10 26.09 2.48    1    50    lhs POINT (788229.5 5277319)
-#> 2  10.06 17.20 3.65    1    50    lhs POINT (788651.8 5278835)
-#> 3  16.53 27.36 3.94    1    50    lhs POINT (802962.2 5279089)
-#> 4   1.25  5.17 0.40    1    50    lhs POINT (797800.4 5267878)
-#> 5  10.29 22.10 2.80    1    50    lhs POINT (787333.8 5276971)
-#> 6  15.42 30.50 2.92    1    50    lhs POINT (800029.3 5269232)
-#> 7  13.51 23.61 3.42    1    50    lhs POINT (802008.3 5267834)
-#> 8   7.48 15.63 2.74    1    50    lhs POINT (798142.4 5274703)
-#> 9   4.53 11.87 1.65    1    50    lhs POINT (787505.6 5277586)
-#> 10 14.32 21.27 3.84    1    50    lhs POINT (793165.5 5278302)
+#> 1   1.47  3.04 0.64    1    50    lhs POINT (796291.6 5268117)
+#> 2   6.97 17.96 1.79    1    50    lhs POINT (789108.2 5277652)
+#> 3  19.49 31.08 4.94    1    50    lhs   POINT (801354 5274227)
+#> 4   7.32 16.66 2.07    1    50    lhs POINT (801516.4 5272321)
+#> 5  15.01 21.62 4.51    1    50    lhs POINT (801134.4 5277518)
+#> 6  10.06 17.20 3.65    1    50    lhs POINT (788651.8 5278835)
+#> 7   3.56 10.17 1.38    1    50    lhs POINT (798963.3 5268920)
+#> 8   2.81  9.86 0.84    1    50    lhs POINT (792573.6 5271174)
+#> 9   2.13  6.88 0.91    1    50    lhs POINT (799508.8 5270341)
+#> 10  0.32  0.71 0.04    1    50    lhs POINT (798180.6 5276603)
 
 #--- generate stats ---#
 stats_nested(data = samples, cores = cores)
@@ -117,13 +126,13 @@ bootstrap_stats(data = stats, population = population, cores = cores)
 ``` r
 #--- function needs to have more than 1 metric to give proper outputs ---#
 
-.f <- function(x){
-
+.f <- function(x) {
   #--- calculate the mean and percent of points less than the mean ---#
-  c(mean = mean(x), 
-  perc_gr_mean = length(x[x < mean(x)])/length(x))
-
-} 
+  c(
+    mean = mean(x),
+    perc_gr_mean = length(x[x < mean(x)]) / length(x)
+  )
+}
 
 s <- stats_nested(data = samples, cores = cores, .f = .f)
 
