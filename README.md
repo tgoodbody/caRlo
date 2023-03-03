@@ -1,21 +1,21 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# GEDIsamp
+# caRlo
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of GEDIsamp is to sample, generate statistics, and plot outputs
+The goal of caRlo is to sample, generate statistics, and plot outputs
 
 ## Installation
 
-You can install the development version of GEDIsamp from
+You can install the development version of caRlo from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("tgoodbody/GEDIsamp")
+devtools::install_github("tgoodbody/caRlo")
 ```
 
 ## Example

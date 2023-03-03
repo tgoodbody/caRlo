@@ -12,20 +12,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-# GEDIsamp
+# caRlo
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of GEDIsamp is to sample, generate statistics, and plot outputs
+The goal of caRlo is to sample, generate statistics, and plot outputs
 
 ## Installation
 
-You can install the development version of GEDIsamp from [GitHub](https://github.com/) with:
+You can install the development version of caRlo from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("tgoodbody/GEDIsamp")
+devtools::install_github("tgoodbody/caRlo")
 ```
 
 ## Example
@@ -33,7 +33,7 @@ devtools::install_github("tgoodbody/GEDIsamp")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r, echo = FALSE}
-library(GEDIsamp)
+library(caRlo)
 cores <- 5
 
 

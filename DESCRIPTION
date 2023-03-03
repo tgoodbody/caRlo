@@ -1,4 +1,4 @@
-Package: GEDIsamp
+Package: caRlo
 Title: Ger GEDI data and compare to ALS
 Version: 0.0.1
 Authors@R: c(
