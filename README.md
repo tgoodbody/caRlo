@@ -62,25 +62,18 @@ This is a basic example which shows you how to solve a common problem:
 
 } 
 
-stats_nested(data = samples, cores = cores, .f = .f)
-#> # A tibble: 15 × 5
-#>     iter nSamp method data              statistics      
-#>    <dbl> <dbl> <chr>  <list>            <list>          
-#>  1     1    50 lhs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  2     2    50 lhs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  3     3    50 lhs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  4     4    50 lhs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  5     5    50 lhs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  6     1    50 srs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  7     2    50 srs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  8     3    50 srs    <tibble [50 × 3]> <tibble [6 × 3]>
-#>  9     4    50 srs    <tibble [50 × 3]> <tibble [6 × 3]>
-#> 10     5    50 srs    <tibble [50 × 3]> <tibble [6 × 3]>
-#> 11     1    50 lpm    <tibble [50 × 3]> <tibble [6 × 3]>
-#> 12     2    50 lpm    <tibble [50 × 3]> <tibble [6 × 3]>
-#> 13     3    50 lpm    <tibble [50 × 3]> <tibble [6 × 3]>
-#> 14     4    50 lpm    <tibble [50 × 3]> <tibble [6 × 3]>
-#> 15     5    50 lpm    <tibble [50 × 3]> <tibble [6 × 3]>
+s <- stats_nested(data = samples, cores = cores, .f = .f)
+
+s$statistics[[1]]
+#> # A tibble: 6 × 3
+#>   statistic    name  value
+#>   <chr>        <chr> <dbl>
+#> 1 mean         zmean  8.92
+#> 2 mean         zq90  17.9 
+#> 3 mean         lai    2.30
+#> 4 perc_gr_mean zmean  0.52
+#> 5 perc_gr_mean zq90   0.46
+#> 6 perc_gr_mean lai    0.52
 ```
 
 ## outputs
@@ -96,16 +89,16 @@ monte_carlo(data = plots, nSamp = c(50, 100, 150), iter = 2, cores = cores)
 #> Projected CRS: ETRS89 / UTM zone 32N
 #> First 10 features:
 #>    zmean  zq90  lai iter nSamp method                     geom
-#> 1   1.36  4.69 0.60    1    50    lhs POINT (792316.2 5272377)
-#> 2   3.70 13.28 0.94    1    50    lhs POINT (787136.9 5274271)
-#> 3   6.64 19.64 1.24    1    50    lhs POINT (787187.2 5283090)
-#> 4   0.56  1.85 0.17    1    50    lhs POINT (792149.7 5276770)
-#> 5   9.84 21.93 3.14    1    50    lhs   POINT (801748 5269030)
-#> 6  13.12 23.00 3.53    1    50    lhs POINT (793360.3 5279120)
-#> 7   9.92 18.95 2.82    1    50    lhs   POINT (789775 5278571)
-#> 8   9.56 23.79 2.31    1    50    lhs POINT (801973.4 5276343)
-#> 9   0.98  2.87 0.37    1    50    lhs POINT (792863.6 5273792)
-#> 10  6.27 17.01 1.58    1    50    lhs POINT (792363.9 5274080)
+#> 1   7.89 15.06 2.89    1    50    lhs POINT (786560.8 5274454)
+#> 2   1.79  9.87 0.33    1    50    lhs   POINT (802112 5275445)
+#> 3   9.32 20.19 3.07    1    50    lhs POINT (787182.5 5275565)
+#> 4  14.65 25.06 4.87    1    50    lhs   POINT (797791 5273284)
+#> 5   5.47 14.44 1.51    1    50    lhs   POINT (803039 5274805)
+#> 6   1.30  4.07 0.62    1    50    lhs POINT (801968.6 5276545)
+#> 7   3.31  7.18 1.85    1    50    lhs POINT (788615.1 5277535)
+#> 8  11.81 19.83 4.11    1    50    lhs POINT (801402.9 5273410)
+#> 9  10.33 21.76 3.16    1    50    lhs   POINT (795133 5277281)
+#> 10  3.84 11.73 1.05    1    50    lhs POINT (794704.1 5275741)
 
 stats_nested(data = samples, cores = cores)
 #> # A tibble: 15 × 5

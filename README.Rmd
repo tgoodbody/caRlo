@@ -87,8 +87,9 @@ bootstraps <- sample_bootstrap(data = stats, population = population, cores = co
 
 } 
 
-stats_nested(data = samples, cores = cores, .f = .f)
+s <- stats_nested(data = samples, cores = cores, .f = .f)
 
+s$statistics[[1]]
 
 ```
 
