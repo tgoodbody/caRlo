@@ -7,7 +7,7 @@
 #' @param cores An optional argument indicating the number of CPU cores to use for parallel computation. If NULL, the function runs the bootstrap sequentially.
 #' @param R The number of bootstrap resamples to generate.
 #'
-#' @importFrom stats IQR var quantile
+#' @importFrom stats IQR var quantile sd median
 #' @import utils
 #' @importFrom tidyr unnest
 #' @importFrom dplyr group_by filter
@@ -35,9 +35,8 @@ bootstrap_stats <- function(data,
     filter(statistic %in% popnames)
 
   #--- check that data and population have matching names ---#
-  if(nrow(out) == 0){
+  if (nrow(out) == 0) {
     stop("'data' and 'population' must have statistics with the same names.", call. = FALSE)
-
   }
 
   stat_names <- unique(out$statistic)
@@ -55,9 +54,10 @@ bootstrap_stats <- function(data,
 
   # Print message with missing names (if any)
   if (length(missing_names) > 0) {
-
-    m <- paste("The following statistics do not match in 'data' and 'population. Dropping:",
-               paste(missing_names, collapse = ", "))
+    m <- paste(
+      "The following statistics do not match in 'data' and 'population. Dropping:",
+      paste(missing_names, collapse = ", ")
+    )
 
     message(m)
   }

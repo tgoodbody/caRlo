@@ -14,6 +14,7 @@ Imports:
     boot,
     broom,
     dplyr,
+    ggplot2,
     methods,
     parallel,
     SamplingBigData,
