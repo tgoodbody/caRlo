@@ -34,6 +34,9 @@ bootstrap_stats <- function(data,
     nest() %>%
     filter(statistic %in% popnames)
 
+  population <- population %>%
+    select(unique(out$statistic))
+
   #--- check that data and population have matching names ---#
   if (nrow(out) == 0) {
     stop("'data' and 'population' must have statistics with the same names.", call. = FALSE)

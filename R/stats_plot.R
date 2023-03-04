@@ -23,8 +23,7 @@ stats_plot <- function(data, statistics = NULL, type = "mean", ...) {
   }
 
   d <- data %>%
-    select(-data) %>%
-    unnest(statistics) %>%
+    unnest(data) %>%
     group_by(nSamp, method, statistic, name)
 
   if (!is.null(statistics)) {
@@ -41,7 +40,7 @@ stats_plot <- function(data, statistics = NULL, type = "mean", ...) {
       ) %>%
       unique() %>%
       mutate(nSamp = as.factor(nSamp)) %>%
-      filter(statistic %in% ms) %>%
+      #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name), colour = method, fill = method)) +
       geom_point() +
       geom_ribbon(alpha = 0.15, colour = NA) +
@@ -52,7 +51,7 @@ stats_plot <- function(data, statistics = NULL, type = "mean", ...) {
   if (type == "box") {
     p <- d %>%
       mutate(nSamp = as.factor(nSamp)) %>%
-      filter(statistic %in% ms) %>%
+      #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, value, group = interaction(nSamp, method, name), fill = method)) +
       geom_boxplot(lwd = 0.2) +
       facet_wrap(name ~ statistic, ...) +

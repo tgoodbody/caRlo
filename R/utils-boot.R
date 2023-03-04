@@ -10,11 +10,19 @@
 stdboot <- function(x, population, R = 10000) {
   x <- dplyr::pull(x)
 
-  bmed <- tidy(boot(x, boot_median, R, pop = population$median), conf.int = TRUE) %>%
-    mutate(bootstrap = "median")
+  if("median" %in% names(population)){
+    bmed <- tidy(boot(x, boot_median, R, pop = population$median), conf.int = TRUE) %>%
+      mutate(bootstrap = "median")
+  } else {
+    bmed <- data.frame()
+  }
 
-  bmean <- tidy(boot(x, boot_mean, R, pop = population$mean), conf.int = TRUE) %>%
-    mutate(bootstrap = "mean")
+  if("mean" %in% names(population)){
+    bmean <- tidy(boot(x, boot_mean, R, pop = population$mean), conf.int = TRUE) %>%
+      mutate(bootstrap = "mean")
+  } else {
+    bmean <- data.frame()
+  }
 
   out <- bind_rows(bmed, bmean)
 
