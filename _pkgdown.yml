@@ -9,6 +9,7 @@ reference:
   - "monte_carlo"
   - starts_with("stats_")
   - "bootstrap_stats"
+  - starts_with("plot_")
 
 authors:
   Tristan RH Goodbody:
