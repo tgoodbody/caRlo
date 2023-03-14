@@ -54,7 +54,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>an <code>sf</code> of type POINT or <code>data.frame</code> object</p></dd>
+<dd><p>an <code>sf</code> of type POINT</p></dd>
 
 
 <dt>metrics</dt>
@@ -70,8 +70,9 @@
 
 
 <dt>method</dt>
-<dd><p>The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
-"srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.</p></dd>
+<dd><p>The method to use for sampling. Can be <code>"clhs"</code> for Latin Hypercube Sampling,
+<code>"balanced"</code> else for Balanced Sampling, <code>"srs"</code> for Simple Random Sampling, or <code>"strat"</code> for stratified sampling.
+If <code>method = "strat"</code>, <code>data</code> must have an attribute named <code>strata</code></p></dd>
 
 
 <dt>cores</dt>

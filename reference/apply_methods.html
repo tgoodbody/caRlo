@@ -72,8 +72,9 @@ and Latin pseudo-maximum sampling (LPM).</p>
 
 
 <dt>method</dt>
-<dd><p>The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
-"srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.</p></dd>
+<dd><p>The method to use for sampling. Can be <code>"clhs"</code> for Latin Hypercube Sampling,
+<code>"balanced"</code> else for Balanced Sampling, <code>"srs"</code> for Simple Random Sampling, or <code>"strat"</code> for stratified sampling.
+If <code>method = "strat"</code>, <code>data</code> must have an attribute named <code>strata</code></p></dd>
 
 
 <dt>cores</dt>

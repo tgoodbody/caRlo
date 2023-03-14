@@ -31,6 +31,9 @@
     <loc>https://tgoodbody.github.io/caRlo/reference/boot_median.html</loc>
   </url>
   <url>
+    <loc>https://tgoodbody.github.io/caRlo/reference/bootstrap_plot.html</loc>
+  </url>
+  <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/bootstrap_stats.html</loc>
   </url>
   <url>
@@ -38,9 +41,6 @@
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/monte_carlo.html</loc>
-  </url>
-  <url>
-    <loc>https://tgoodbody.github.io/caRlo/reference/sample_balanced.html</loc>
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/stats_nested.html</loc>
