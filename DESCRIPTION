@@ -19,7 +19,7 @@ Imports:
     parallel,
     SamplingBigData,
     sf,
-    sgsR,
+    sgsR (>= 1.4.2),
     stats,
     terra,
     tidyr,

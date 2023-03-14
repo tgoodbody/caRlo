@@ -19,5 +19,7 @@ stats_summary(data, metrics = NULL, population = FALSE, .f = NULL)
 A tibble object containing the computed summary statistics.
 }
 \description{
-This function computes summary statistics for numeric columns in a SpatRaster or a data.frame. If a list of metrics is specified, it only computes summary statistics for those columns.
+This function computes summary statistics for numeric columns in a SpatRaster or a data.frame.
+If a vector of metric names is specified, it only computes summary statistics for those columns.
+Rows with NA values are dropped.
 }

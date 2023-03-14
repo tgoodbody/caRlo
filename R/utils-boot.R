@@ -8,21 +8,20 @@
 #' @importFrom boot boot
 #' @importFrom broom tidy
 stdboot <- function(x, population, R = 10000) {
-  x <- dplyr::pull(x)
 
-  if("median" %in% names(population)){
-    bmed <- tidy(boot(x, boot_median, R, pop = population$median), conf.int = TRUE) %>%
+  #if("median" %in% names(population)){
+    bmed <- tidy(boot(x$samples, boot_median, R, pop = unique(x$population)), conf.int = TRUE) %>%
       mutate(bootstrap = "median")
-  } else {
-    bmed <- data.frame()
-  }
+  #} else {
+  #  bmed <- data.frame()
+  #}
 
-  if("mean" %in% names(population)){
-    bmean <- tidy(boot(x, boot_mean, R, pop = population$mean), conf.int = TRUE) %>%
+  #if("mean" %in% names(population)){
+    bmean <- tidy(boot(x$samples, boot_mean, R, pop = unique(x$population)), conf.int = TRUE) %>%
       mutate(bootstrap = "mean")
-  } else {
-    bmean <- data.frame()
-  }
+  #} else {
+  #  bmean <- data.frame()
+  #}
 
   out <- bind_rows(bmed, bmean)
 

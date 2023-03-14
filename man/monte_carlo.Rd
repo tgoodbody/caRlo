@@ -7,7 +7,7 @@
 monte_carlo(data, metrics = NULL, nSamp, iter, method = NULL, cores = NULL)
 }
 \arguments{
-\item{data}{an \code{sf} of type POINT or \code{data.frame} object}
+\item{data}{an \code{sf} of type POINT}
 
 \item{metrics}{a vector of character strings that match desired column names in \code{data}}
 
@@ -15,8 +15,9 @@ monte_carlo(data, metrics = NULL, nSamp, iter, method = NULL, cores = NULL)
 
 \item{iter}{a numeric scalar greater than 0}
 
-\item{method}{The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
-"srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.}
+\item{method}{The method to use for sampling. Can be \code{"clhs"} for Latin Hypercube Sampling,
+\code{"balanced"} else for Balanced Sampling, \code{"srs"} for Simple Random Sampling, or \code{"strat"} for stratified sampling.
+If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}}
 
 \item{cores}{Number of cores to use for parallel computation}
 }

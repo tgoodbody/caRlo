@@ -7,8 +7,9 @@
 #' @param data A data frame to be sampled.
 #' @param nSamp The number of samples to generate.
 #' @param iter The number of iterations to perform.
-#' @param method The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
-#' "srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.
+#' @param method The method to use for sampling. Can be \code{"clhs"} for Latin Hypercube Sampling,
+#' \code{"balanced"} else for Balanced Sampling, \code{"srs"} for Simple Random Sampling, or \code{"strat"} for stratified sampling.
+#' If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}
 #' @param cores Number of cores to use for parallel computation
 #'
 #' @keywords internal
@@ -64,24 +65,22 @@ stdmethods <- function(data,
                        method) {
   #--- determine method to use ---#
 
-  if (method == "lhs") {
-    suppressMessages(
-      out <- sample_existing(existing = data, nSamp = nSamp) %>%
+  if (method == "clhs") {
+      out <- sample_existing(existing = data, nSamp = nSamp, type = "clhs") %>%
         mutate(
           iter = iter,
           nSamp = nSamp,
           method = method
         )
-    )
   } else if (method == "srs") {
-    out <- slice_sample(.data = data, n = nSamp) %>%
+    out <- sample_existing(existing = data, nSamp = nSamp, type = "srs") %>%
       mutate(
         iter = iter,
         nSamp = nSamp,
         method = method
       )
-  } else if (method == "lpm") {
-    out <- sample_balanced(data = data, nSamp = nSamp) %>%
+  } else if (method == "balanced") {
+    out <- sample_existing(existing = data, nSamp = nSamp, type = "balanced") %>%
       mutate(
         iter = iter,
         nSamp = nSamp,
@@ -94,43 +93,4 @@ stdmethods <- function(data,
   #--- extract coordinates and bind them to the sampled data ---#
 
   return(out)
-}
-
-#' Balanced sampling
-#'
-#' This function performs Latin Point Mass Sampling (LPM) on data.
-#'
-#' @inheritParams apply_methods
-#'
-#' @keywords internal
-#'
-#' @param p probability string
-#' @return A data frame containing the sampled data.
-
-sample_balanced <- function(data,
-                            nSamp,
-                            p = NULL) {
-  vals <- . <- NULL
-
-  vals_m <- data %>%
-    sf::st_drop_geometry() %>%
-    as.matrix(.)
-
-  N <- nrow(vals_m)
-  if (is.null(p)) {
-    p <- rep(nSamp / N, N)
-  } else {
-    if (!is.numeric(p)) {
-      stop("'p' must be type numeric.", call. = FALSE)
-    }
-    if (length(p) != N) {
-      stop(paste0("'p' have a length of ", N, "."), call. = FALSE)
-    }
-  }
-
-  sampled <- lpm2_kdtree(prob = p, x = vals_m)
-
-  samples <- data[sampled, ]
-
-  return(samples)
 }

@@ -13,8 +13,9 @@ stdmethods(data, nSamp, iter, method)
 
 \item{iter}{The number of iterations to perform.}
 
-\item{method}{The method to use for sampling. Can be "lhs" for Latin Hypercube Sampling,
-"srs" for Simple Random Sampling, or "lpm" else for Balanced Sampling.}
+\item{method}{The method to use for sampling. Can be \code{"clhs"} for Latin Hypercube Sampling,
+\code{"balanced"} else for Balanced Sampling, \code{"srs"} for Simple Random Sampling, or \code{"strat"} for stratified sampling.
+If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}}
 }
 \value{
 A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.

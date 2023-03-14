@@ -144,12 +144,14 @@ track changes in forest health over time.
     #--- calculate statistics from monte carlo samples ---#
     stats <- stats_nested(data = samples, cores = cores)
 
+    #--- plot stats from monte carlo samples with standard error ribbons for all metrics ---#
+    stats_plot(data = stats, type = "mean", scales = "free")
+
     #--- bootstrap statistics of monte carlo samples ---#
     bootstraps <- bootstrap_stats(data = stats, population = population, cores = cores)
 
-    #--- plot bootstrap means of monte carlo samples with standard error ribbons for all metrics ---#
-    stats_plot(data = bootstraps, type = "mean")
-      
+    #--- plot stats from monte carlo samples with standard error ribbons for all metrics ---#
+    bootstrap_plot(data = bootstraps, bootstat = "mean", scales = "free")
 
 ## Specify user defined functions for statistics using `.f`
 
@@ -189,10 +191,7 @@ population <-  data.frame(sd = 1.1, mean = 2.2)
 
 #--- bootstrap statistics of monte carlo samples ---#
 bootstraps <- bootstrap_stats(data = caRlo:::stats, population = population, cores = 5)
-#> The following statistics do not match in 'data' and 'population. Dropping: sd
 
 #--- plot bootstrap means of monte carlo samples with standard error ribbons for all metrics ---#
-stats_plot(data = bootstraps, type = "mean", scales = "free")
+bootstrap_plot(data = bootstraps,bootstat = "mean", type = "mean", scales = "free")
 ```
-
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
