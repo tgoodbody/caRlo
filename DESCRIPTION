@@ -22,6 +22,7 @@ Imports:
     sgsR (>= 1.4.2),
     stats,
     terra,
+    tibble,
     tidyr,
     utils
 URL: https://tgoodbody.github.io/caRlo/
