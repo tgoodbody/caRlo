@@ -16,6 +16,8 @@ apply_sample(nSamp, iter, method, data, ...)
 If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}}
 
 \item{data}{A data frame to be sampled.}
+
+\item{...}{parameters to pass to \link{sgsR::sample_ahels}{sample_ahels}}
 }
 \value{
 A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.

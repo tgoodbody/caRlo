@@ -18,6 +18,8 @@ apply_methods(data, nSamp, iter, method = NULL, cores = NULL, ...)
 If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}}
 
 \item{cores}{Number of cores to use for parallel computation}
+
+\item{...}{parameters to pass to \link{sgsR::sample_ahels}{sample_ahels}}
 }
 \value{
 A data frame containing the sampled data using each of the three methods.

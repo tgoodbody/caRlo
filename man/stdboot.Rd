@@ -4,14 +4,14 @@
 \alias{stdboot}
 \title{Standard summary}
 \usage{
-stdboot(x, population, R = 10000)
+stdboot(x, R = 10000)
 }
 \arguments{
 \item{x}{A numeric vector for which summary statistics are to be computed.}
 
-\item{population}{dataframe with population statistics}
-
 \item{R}{Number of bootstrap iterations}
+
+\item{population}{dataframe with population statistics}
 }
 \description{
 Standard summary
