@@ -10,7 +10,7 @@
 #' @importFrom tibble tibble
 stdboot <- function(x, R = 10000) {
 
-  diff <- NULL
+  diff <- bmed <- bmean <- NULL
 
   # Try to compute bootstrapped median and confidence intervals
   tryCatch({
