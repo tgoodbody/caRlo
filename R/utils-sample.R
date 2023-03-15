@@ -14,14 +14,16 @@
 #'
 #' @keywords internal
 #'
+#' @inheritParams monte_carlo
+#'
 #' @importFrom parallel makePSOCKcluster setDefaultCluster clusterEvalQ clusterMap stopCluster
-#' @importFrom sgsR sample_existing
+#' @importFrom sgsR sample_existing sample_ahels
 #' @importFrom dplyr mutate slice_sample
 #' @importFrom sf st_coordinates st_drop_geometry st_coordinates
 #' @importFrom SamplingBigData lpm2_kdtree
 #'
 #' @return A data frame containing the sampled data using each of the three methods.
-apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
+apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL,...) {
   if (!is.null(cores)) {
     #--- parallelize ---#
     cl <- makePSOCKcluster(cores)
@@ -29,7 +31,7 @@ apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
-    out <- clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method))
+    out <- clusterMap(cl, fun = apply_sample, nSamp = nSamp, iter = iter, MoreArgs = list(data = data, method = method,...))
   } else {
     out <- lapply(X = method, FUN = apply_sample, nSamp = nSamp, iter = iter, data = data)
   }
@@ -46,8 +48,8 @@ apply_methods <- function(data, nSamp, iter, method = NULL, cores = NULL) {
 #' @keywords internal
 #'
 #' @return A data frame containing the sampled data, the iteration number, the number of samples, and the sampling method used.
-apply_sample <- function(nSamp, iter, method, data) {
-  mapply(FUN = stdmethods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data), SIMPLIFY = FALSE)
+apply_sample <- function(nSamp, iter, method, data, ...) {
+  mapply(FUN = stdmethods, nSamp = nSamp, iter = iter, method = method, MoreArgs = list(data = data,...), SIMPLIFY = FALSE)
 }
 
 #' Apply Sampling Method to Data
@@ -62,7 +64,8 @@ apply_sample <- function(nSamp, iter, method, data) {
 stdmethods <- function(data,
                        nSamp,
                        iter,
-                       method) {
+                       method,
+                       ...) {
   #--- determine method to use ---#
 
   if (method == "clhs") {
@@ -86,6 +89,15 @@ stdmethods <- function(data,
         nSamp = nSamp,
         method = method
       )
+  } else if (method == "ahels"){
+
+    out <- sample_ahels(mraster = mraster, existing = data, nSamp = nSamp, ...) %>%
+      mutate(
+        iter = iter,
+        nSamp = nSamp,
+        method = method
+      )
+
   } else {
     stop("unknown sampling method provided.")
   }

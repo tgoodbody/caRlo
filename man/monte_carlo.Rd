@@ -4,7 +4,15 @@
 \alias{monte_carlo}
 \title{Iterate over multiple sampling methods and sample sizes}
 \usage{
-monte_carlo(data, metrics = NULL, nSamp, iter, method = NULL, cores = NULL)
+monte_carlo(
+  data,
+  metrics = NULL,
+  nSamp,
+  iter,
+  method = NULL,
+  cores = NULL,
+  ...
+)
 }
 \arguments{
 \item{data}{an \code{sf} of type POINT}
@@ -20,6 +28,8 @@ monte_carlo(data, metrics = NULL, nSamp, iter, method = NULL, cores = NULL)
 If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}}
 
 \item{cores}{Number of cores to use for parallel computation}
+
+\item{...}{parameters to pass to \link{sgsR::sample_ahels}{sample_ahels}}
 }
 \value{
 a list of sampled datasets

@@ -6,6 +6,7 @@
 #' @param metrics a vector of character strings that match desired column names in \code{data}
 #' @param nSamp a numeric scalar greater than 0 and less than the number of rows in \code{data}
 #' @param iter a numeric scalar greater than 0
+#' @param ... parameters to pass to \link{sgsR::sample_ahels}{sample_ahels}
 #' @inheritParams apply_methods
 #'
 #' @return a list of sampled datasets
@@ -23,7 +24,8 @@ monte_carlo <- function(data,
                         nSamp,
                         iter,
                         method = NULL,
-                        cores = NULL) {
+                        cores = NULL,
+                        ...) {
 
   # sample must be an sf or dataframe object
   if (!inherits(st_geometry(data), "sfc_POINT")) {
@@ -62,7 +64,7 @@ monte_carlo <- function(data,
 
   #--- add default sampling methods ---#
   if (is.null(method)) {
-    method <- c("clhs", "balanced", "srs")
+    method <- c("clhs", "balanced", "srs", "ahels")
   }
 
   #--- apply sampling

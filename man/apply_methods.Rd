@@ -4,7 +4,7 @@
 \alias{apply_methods}
 \title{Sample a data frame using different methods}
 \usage{
-apply_methods(data, nSamp, iter, method = NULL, cores = NULL)
+apply_methods(data, nSamp, iter, method = NULL, cores = NULL, ...)
 }
 \arguments{
 \item{data}{A data frame to be sampled.}

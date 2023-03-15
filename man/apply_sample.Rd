@@ -4,7 +4,7 @@
 \alias{apply_sample}
 \title{Apply Sampling Methods to Data}
 \usage{
-apply_sample(nSamp, iter, method, data)
+apply_sample(nSamp, iter, method, data, ...)
 }
 \arguments{
 \item{nSamp}{The number of samples to generate.}

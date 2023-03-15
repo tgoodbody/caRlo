@@ -4,7 +4,7 @@
 \alias{stdmethods}
 \title{Apply Sampling Method to Data}
 \usage{
-stdmethods(data, nSamp, iter, method)
+stdmethods(data, nSamp, iter, method, ...)
 }
 \arguments{
 \item{data}{A data frame to be sampled.}
