@@ -5,6 +5,9 @@
 #' @param data A data frame containing the data to be plotted.
 #' @param statistics An optional vector of statistics to include in the plot.
 #' @param type The type of plot to create, either "mean" (default) or "box".
+#' @param population The output of \code{stats_summary(population = TRUE)}.
+#' Represents population parameters. Functions used to calculate statistics
+#' must be the same for a resonable output.
 #' @param ... Additional arguments passed to ggplot2.
 #'
 #' @return A ggplot2 object representing the plot of summary statistics.
@@ -13,7 +16,7 @@
 #' @importFrom dplyr summarise
 #' @export
 
-stats_plot <- function(data, statistics = NULL, type = "mean", ...) {
+stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean", ...) {
   #--- globals ---#
 
   nSamp <- method <- statistic <- name <- value <- ms <- NULL
@@ -56,6 +59,13 @@ stats_plot <- function(data, statistics = NULL, type = "mean", ...) {
       geom_boxplot(lwd = 0.2) +
       facet_wrap(name ~ statistic, ...) +
       theme_light()
+  }
+
+
+  if(!is.null(population)){
+
+    p <- p + geom_hline(data = pop, aes(yintercept = value, alpha = 0.2),lty = "dashed")
+
   }
 
   return(p)
