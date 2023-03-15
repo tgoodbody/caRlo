@@ -19,7 +19,7 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
 
   nSamp <- std.error <- bootstrap <- method <- statistic <- name <- value <- ms <- NULL
 
-  if (!type %in% c("mean", "box")) {
+  if (!type %in% c("mean", "bias", "box")) {
     stop("Unknown plot 'type'.", call. = FALSE)
   }
 
@@ -59,6 +59,17 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       theme_light()
   }
 
+  if (type == "bias") {
+    p <- d %>%
+      mutate(nSamp = as.factor(nSamp)) %>%
+      #filter(statistic %in% ms) %>%
+      ggplot(aes(nSamp, bias, group = interaction(statistic, method, name, bootstrap), colour = method, fill = method, shape = bootstrap)) +
+      geom_point() +
+      geom_line() +
+      facet_wrap(name ~ statistic, ...) +
+      theme_light()
+  }
+
   if (type == "box") {
     p <- d %>%
       mutate(nSamp = as.factor(nSamp)) %>%
@@ -68,6 +79,8 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       facet_wrap(name ~ statistic, ...) +
       theme_light()
   }
+
+
 
   return(p)
 }
