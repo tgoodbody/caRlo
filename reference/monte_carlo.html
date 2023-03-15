@@ -48,7 +48,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">monte_carlo</span><span class="op">(</span><span class="va">data</span>, metrics <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">nSamp</span>, <span class="va">iter</span>, method <span class="op">=</span> <span class="cn">NULL</span>, cores <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">monte_carlo</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  metrics <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">nSamp</span>,</span>
+<span>  <span class="va">iter</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cores <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,6 +85,10 @@ If <code>method = "strat"</code>, <code>data</code> must have an attribute named
 
 <dt>cores</dt>
 <dd><p>Number of cores to use for parallel computation</p></dd>
+
+
+<dt>...</dt>
+<dd><p>parameters to pass to sgsR::sample_ahelssample_ahels</p></dd>
 
 </dl></div>
     <div class="section level2">
