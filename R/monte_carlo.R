@@ -64,7 +64,7 @@ monte_carlo <- function(data,
 
   #--- add default sampling methods ---#
   if (is.null(method)) {
-    method <- c("clhs", "balanced", "srs", "ahels")
+    method <- c("clhs", "balanced", "srs")
   }
 
   #--- apply sampling
