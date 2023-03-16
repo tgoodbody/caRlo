@@ -30,9 +30,9 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
     group_by(nSamp, method, statistic, name)
 
   if (!is.null(statistics)) {
-    stats <- statistics
-  } else {
-    stats <- unique(d$statistic)
+
+    d <- d %>%
+      filter(statistic %in% statistics)
   }
 
   if (type == "mean") {
