@@ -45,10 +45,13 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name), colour = method, fill = method)) +
+      scale_color_brewer(palette="Dark2") +
+      scale_fill_brewer(palette="Dark2") +
       geom_point() +
       geom_ribbon(alpha = 0.15, colour = NA) +
       facet_wrap(name ~ statistic, ...) +
-      theme_light()
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, hjust=1))
   }
 
   if (type == "box") {
@@ -56,9 +59,12 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, value, group = interaction(nSamp, method, name), fill = method)) +
+      scale_color_brewer(palette="Dark2") +
+      scale_fill_brewer(palette="Dark2") +
       geom_boxplot(lwd = 0.2) +
       facet_wrap(name ~ statistic, ...) +
-      theme_light()
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, hjust=1))
   }
 
 
@@ -67,7 +73,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
     population <- population %>%
       filter(statistic %in% statistics)
 
-    p <- p + geom_hline(data = population, aes(yintercept = value, alpha = 0.2),lty = "dashed")
+    p <- p + geom_hline(data = population, aes(yintercept = value),alpha = 0.5,lty = "dashed")
 
   }
 

@@ -53,10 +53,13 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, bootstat, ymax = bootstat + std.error, ymin = bootstat - std.error, group = interaction(statistic, method, name, bootstrap), colour = method, fill = method, shape = bootstrap)) +
+      scale_color_brewer(palette="Dark2") +
+      scale_fill_brewer(palette="Dark2") +
+      geom_ribbon(alpha = 0.35, colour = NA) +
       geom_point() +
-      geom_ribbon(alpha = 0.25, colour = NA) +
       facet_wrap(name ~ statistic, ...) +
-      theme_light()
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, hjust=1))
   }
 
   if (type == "bias") {
@@ -64,10 +67,13 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, bias, group = interaction(statistic, method, name, bootstrap), colour = method, fill = method, shape = bootstrap)) +
+      scale_color_brewer(palette="Dark2") +
+      scale_fill_brewer(palette="Dark2") +
       geom_point() +
       geom_line() +
       facet_wrap(name ~ statistic, ...) +
-      theme_light()
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, hjust=1))
   }
 
   if (type == "box") {
@@ -75,9 +81,12 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
       ggplot(aes(nSamp, value, group = interaction(nSamp, method, name), fill = method)) +
+      scale_color_brewer(palette="Dark2") +
+      scale_fill_brewer(palette="Dark2") +
       geom_boxplot(lwd = 0.2) +
       facet_wrap(name ~ statistic, ...) +
-      theme_light()
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, hjust=1))
   }
 
 

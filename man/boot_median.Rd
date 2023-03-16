@@ -2,21 +2,19 @@
 % Please edit documentation in R/utils-boot.R
 \name{boot_median}
 \alias{boot_median}
-\title{Bootstrapped difference from population median}
+\title{Bootstrapped median}
 \usage{
-boot_median(x, i, pop)
+boot_median(x, i)
 }
 \arguments{
 \item{x}{A vector of numerical values.}
 
 \item{i}{A vector of indices specifying the current bootstrap sample.}
-
-\item{pop}{The population median to compare to.}
 }
 \value{
-The difference between the median of the current bootstrap sample and the population median.
+The bootstrapped median of a sample.
 }
 \description{
-This function computes the difference between the median of a given sample and the population median using bootstrapping.
+This function computes the bootstrapped median of a given sample.
 }
 \keyword{internal}

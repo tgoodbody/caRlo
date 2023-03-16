@@ -2,21 +2,19 @@
 % Please edit documentation in R/utils-boot.R
 \name{boot_mean}
 \alias{boot_mean}
-\title{Bootstrapped difference from population mean}
+\title{Bootstrapped mean}
 \usage{
-boot_mean(x, i, pop)
+boot_mean(x, i)
 }
 \arguments{
 \item{x}{A vector of numerical values.}
 
 \item{i}{A vector of indices specifying the current bootstrap sample.}
-
-\item{pop}{The population mean to compare to.}
 }
 \value{
-The difference between the mean of the current bootstrap sample and the population mean.
+The bootstrapped mean of a sample.
 }
 \description{
-This function computes the difference between the mean of a given sample and the population mean using bootstrapping.
+This function computes the bootstrapped mean of a given sample.
 }
 \keyword{internal}

@@ -4,10 +4,14 @@
 \alias{stats_plot}
 \title{Plot summary statistics}
 \usage{
-stats_plot(data, statistics = NULL, type = "mean", ...)
+stats_plot(data, population = NULL, statistics = NULL, type = "mean", ...)
 }
 \arguments{
 \item{data}{A data frame containing the data to be plotted.}
+
+\item{population}{The output of \code{stats_summary(population = TRUE)}.
+Represents population parameters. Functions used to calculate statistics
+must be the same for a resonable output.}
 
 \item{statistics}{An optional vector of statistics to include in the plot.}
 
