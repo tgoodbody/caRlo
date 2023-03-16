@@ -64,6 +64,9 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
 
   if(!is.null(population)){
 
+    population <- population %>%
+      filter(statistic %in% statistics)
+
     p <- p + geom_hline(data = pop, aes(yintercept = value, alpha = 0.2),lty = "dashed")
 
   }
