@@ -38,6 +38,10 @@ monte_carlo <- function(data,
     if (!all(metrics %in% names(data))) {
       stop("Input 'metrics' must be a vector of character strings that match column names in 'data'.")
     }
+
+    data <- data %>%
+      select({{metrics}})
+
   }
 
   # nSamp must be a numeric scalar greater than 0 and less than the number of rows in sample
@@ -52,7 +56,7 @@ monte_carlo <- function(data,
 
   # drop any NA from sample and notify the user
   if (anyNA(data)) {
-    data <-  data %>%
+    data <- data %>%
       na.omit()
     message("Dropped 'data' rows with NA")
   }
