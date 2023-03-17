@@ -37,7 +37,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
 
   if(!"mask" %in% colnames(d)){
 
-    d$mask <- NA
+    d$mask <- "Not specified"
 
   }
 
