@@ -49,7 +49,24 @@ stats_summary <- function(data,
     if (!all(metrics %in% names(data))) {
       stop("all elements of metrics must match column names in `data`.", call. = FALSE)
     }
-    data <- data[, metrics]
+
+     if(length(metrics) == 1){
+
+       #--- if a single metric is provided make it return a data frame and add the appropriate name ---#
+       data <- data.frame(data[[metrics]])
+       names(data) <- metrics
+
+
+     } else {
+
+       #--- if more than 1 metric just subset the data dataframe ---#
+       data <- data[[metrics]]
+
+
+     }
+
+
+
   }
 
   #--- if any columns in data are non-numeric, throw an message that they are being dropped ---#
