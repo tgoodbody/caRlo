@@ -23,13 +23,8 @@ apply_stats <- function(data,
   }
 
   #--- if population is true dont calculate standard error ---#
-  if (isTRUE(population)) {
-    # for each column calculate the following statistics: standard error, min, mean, max, variance, IQR, 10% quantiles from 10%-90%
-    result <- apply(data, MARGIN = 2, FUN = .f)
-  } else {
-    # for each column calculate the following statistics: standard error, min, mean, max, variance, IQR, 10% quantiles from 10%-90%
-    result <- apply(data, MARGIN = 2, FUN = .f)
-  }
+  # for each column calculate the following statistics: standard error, min, mean, max, variance, IQR, 10% quantiles from 10%-90%
+  result <- apply(data, MARGIN = 2, FUN = .f, simplify = FALSE)
 
   #--- convert the result to a data frame ---#
   result <- as.data.frame(result) %>%
