@@ -60,7 +60,7 @@ stats_summary <- function(data,
      } else {
 
        #--- if more than 1 metric just subset the data dataframe ---#
-       data <- data[[metrics]]
+       data <- data[,metrics]
 
 
      }
