@@ -43,6 +43,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
 
   if (type == "mean") {
     p <- d %>%
+      group_by(mask, .add = TRUE) %>%
       summarise(
         mean = mean(value),
         stderr = sd(value) / sqrt(nSamp)
@@ -50,10 +51,10 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       unique() %>%
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
-      ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name,mask), colour = method, fill = method)) +
+      ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name, mask), colour = method, fill = method)) +
       scale_color_brewer(palette="Dark2") +
       scale_fill_brewer(palette="Dark2") +
-      geom_point() +
+      geom_point(aes(shape = mask)) +
       geom_ribbon(alpha = 0.15, colour = NA) +
       facet_wrap(name ~ statistic, ...) +
       theme_light() +
