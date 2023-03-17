@@ -35,6 +35,12 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       filter(statistic %in% statistics)
   }
 
+  if(!"mask" %in% colnames(d)){
+
+    d$mask <- NA
+
+  }
+
   if (type == "mean") {
     p <- d %>%
       summarise(
@@ -44,7 +50,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       unique() %>%
       mutate(nSamp = as.factor(nSamp)) %>%
       #filter(statistic %in% ms) %>%
-      ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name), colour = method, fill = method)) +
+      ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name,mask), colour = method, fill = method)) +
       scale_color_brewer(palette="Dark2") +
       scale_fill_brewer(palette="Dark2") +
       geom_point() +
