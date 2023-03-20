@@ -16,6 +16,9 @@
     <loc>https://tgoodbody.github.io/caRlo/index.html</loc>
   </url>
   <url>
+    <loc>https://tgoodbody.github.io/caRlo/reference/ahelsmethod.html</loc>
+  </url>
+  <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/apply_methods.html</loc>
   </url>
   <url>
@@ -47,6 +50,9 @@
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/monte_carlo.html</loc>
+  </url>
+  <url>
+    <loc>https://tgoodbody.github.io/caRlo/reference/monte_carlo_ahels.html</loc>
   </url>
   <url>
     <loc>https://tgoodbody.github.io/caRlo/reference/stats_nested.html</loc>
