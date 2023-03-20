@@ -8,7 +8,7 @@
 
 ahelsmethod <- function(existing, nFrac, mraster, matrices, ...){
 
-  mraster <- terra::unwrap(mraster)
+  mraster <- unwrap(mraster)
 
   n <- unique(existing$nExist)
 

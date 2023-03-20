@@ -22,7 +22,7 @@ monte_carlo_ahels <- function(existing, mraster, nFrac = 0.1, matrices = NULL, c
     mutate(nExist = nSamp) %>%
     nest(data = c(-nSamp, -iter, -method))
 
-  mr <- terra::wrap(mraster)
+  mr <- wrap(mraster)
 
   if (!is.null(cores)) {
 
