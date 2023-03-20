@@ -10,6 +10,9 @@
 #' @param ... Further arguments passed to the \code{\link{ahelsmethod}}
 #'     function.
 #' @return A nested dataframe with the ahels samples.
+#'
+#' @importFrom terra wrap unwrap
+#'
 #' @export
 
 monte_carlo_ahels <- function(existing, mraster, nFrac = 0.1, matrices = NULL, cores = NULL, ...){
