@@ -42,7 +42,8 @@ monte_carlo_ahels <- function(existing, mraster, nFrac = 0.1, matrices = NULL, c
   }
 
   existing_nested <- existing_nested %>%
-    select(-data)
+    select(-data) %>%
+    unnest(cols = ahels)
 
   return(existing_nested)
 
