@@ -6,7 +6,7 @@ home:
 reference:
 - title: "Principal functions"
 - contents:
-  - "monte_carlo"
+  - starts_with("monte_carlo")
   - starts_with("stats_")
   - "bootstrap_stats"
   - ends_with("plot")

@@ -10,7 +10,7 @@
 #' @importFrom tibble tibble
 stdboot <- function(x, R = 10000) {
 
-  diff <- bdiffmed <- bdiffmean <- bmed <- bmean <- NULL
+  diff <- bdiffmed <- bdiffmean <- bmed <- bmean <- statistic <- NULL
 
   #--- differences between population ---#
   # Try to compute bootstrapped median and confidence intervals

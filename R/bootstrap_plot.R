@@ -17,7 +17,7 @@
 bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mean", ...) {
   #--- globals ---#
 
-  nSamp <- std.error <- bootstrap <- method <- statistic <- name <- value <- ms <- NULL
+  nSamp <- std.error <- bias <- bootstrap <- method <- statistic <- name <- value <- ms <- NULL
 
   if (!type %in% c("mean", "bias", "box")) {
     stop("Unknown plot 'type'.", call. = FALSE)

@@ -11,13 +11,14 @@
 #' \code{"balanced"} else for Balanced Sampling, \code{"srs"} for Simple Random Sampling, or \code{"strat"} for stratified sampling.
 #' If \code{method = "strat"}, \code{data} must have an attribute named \code{strata}
 #' @param cores Number of cores to use for parallel computation
+#' @param ... arguments to pass to \code{\link{sgsR:sample_ahels}{sgsR::sample_ahels()}}
 #'
 #' @keywords internal
 #'
 #' @inheritParams monte_carlo
 #'
 #' @importFrom parallel makePSOCKcluster setDefaultCluster clusterEvalQ clusterMap stopCluster
-#' @importFrom sgsR sample_existing sample_ahels
+#' @importFrom sgsR sample_existing
 #' @importFrom dplyr mutate slice_sample
 #' @importFrom sf st_coordinates st_drop_geometry st_coordinates
 #' @importFrom SamplingBigData lpm2_kdtree
@@ -57,6 +58,7 @@ apply_sample <- function(nSamp, iter, method, data, ...) {
 #' This function applies one of three sampling methods to data: Latin Hypercube Sampling (LHS), Simple Random Sampling (SRS), or Latin Point Mass Sampling (LPM).
 #'
 #' @inheritParams apply_methods
+#' @importFrom sgsR sample_ahels
 #'
 #' @keywords internal
 #'
@@ -66,6 +68,8 @@ stdmethods <- function(data,
                        iter,
                        method,
                        ...) {
+
+
   #--- determine method to use ---#
 
   if (method == "clhs") {
@@ -105,4 +109,39 @@ stdmethods <- function(data,
   #--- extract coordinates and bind them to the sampled data ---#
 
   return(out)
+}
+
+#' Sample ahels using the 'sample_ahels' function from the sgsR package.
+#'
+#' @inheritParams monte_carlo_ahels
+#' @return A dataframe containing the sampled ahels.
+#'
+#' @importFrom sgsR sample_ahels
+#' @keywords internal
+
+ahelsmethod <- function(existing, nFrac, mraster, matrices, ...){
+
+  nExist <- NULL
+
+  mraster <- unwrap(mraster)
+
+  n <- unique(existing$nExist)
+
+  existing <- existing %>%
+    select(-nExist)
+
+  if(nFrac < 1){
+
+    out <- sample_ahels(existing = existing, mraster = mraster, nSamp = n*nFrac, matrices = matrices, ...) %>%
+      mutate(nSampAhels = nrow(.))
+
+  } else {
+
+    out <- sample_ahels(existing = existing, mraster = mraster, nSamp = nFrac, matrices = matrices, ...) %>%
+      mutate(nSampAhels = nrow(.))
+
+  }
+
+  return(out)
+
 }

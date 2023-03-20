@@ -19,7 +19,7 @@ If \code{method = "strat"}, \code{data} must have an attribute named \code{strat
 
 \item{cores}{Number of cores to use for parallel computation}
 
-\item{...}{parameters to pass to \link{sgsR::sample_ahels}{sample_ahels}}
+\item{...}{arguments to pass to \code{\link{sgsR:sample_ahels}{sgsR::sample_ahels()}}}
 }
 \value{
 A data frame containing the sampled data using each of the three methods.

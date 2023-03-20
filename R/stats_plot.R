@@ -19,7 +19,7 @@
 stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean", ...) {
   #--- globals ---#
 
-  nSamp <- method <- statistic <- name <- value <- ms <- NULL
+  nSamp <- method <- statistic <- mask <- name <- value <- ms <- NULL
 
   if (!type %in% c("mean", "box")) {
     stop("Unknown plot 'type'.", call. = FALSE)
