@@ -13,6 +13,11 @@ stdboot(x, R = 10000)
 
 \item{population}{dataframe with population statistics}
 }
+\value{
+Tibble with the bootstrapped statistic, bias, std.error,
+conf.low, conf/high, bootstrap statistic, whether no varion resulting in an error '1 or 0',
+and the bootstrap data 't'.
+}
 \description{
 Standard summary
 }

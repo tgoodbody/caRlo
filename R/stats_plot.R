@@ -14,6 +14,7 @@
 #'
 #' @import ggplot2
 #' @importFrom dplyr summarise
+#' @importFrom ggridges geom_density_ridges
 #' @export
 
 stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean", ...) {
@@ -21,7 +22,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
 
   nSamp <- method <- statistic <- mask <- name <- value <- ms <- NULL
 
-  if (!type %in% c("mean", "box")) {
+  if (!type %in% c("mean", "box","dist")) {
     stop("Unknown plot 'type'.", call. = FALSE)
   }
 
@@ -30,6 +31,10 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
     group_by(nSamp, method, statistic, name)
 
   if (!is.null(statistics)) {
+
+    if(!statistics %in% unique(d$statistic)){
+      stop("'statistics' not found in 'data'", call. = FALSE)
+    }
 
     d <- d %>%
       filter(statistic %in% statistics)
@@ -59,6 +64,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       facet_wrap(name ~ statistic, ...) +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, hjust=1))
+
   }
 
   if (type == "box") {
@@ -74,13 +80,41 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       theme(axis.text.x = element_text(angle = 45, hjust=1))
   }
 
+  if(type == "dist"){
+
+    p <- d %>%
+      mutate(nSamp = as.factor(nSamp)) %>%
+      #filter(statistic %in% ms) %>%
+      ggplot(aes(y = nSamp)) +
+      ggridges::geom_density_ridges(aes(x = value, fill = paste(method)), alpha = .5, color = "white", scale = .95, rel_min_height = .01,) +
+      facet_wrap(name ~ statistic, scales = "free") +
+      theme_light() +
+      theme(axis.text.x = element_text(angle = 45, hjust=1))
+  }
+
 
   if(!is.null(population)){
 
-    population <- population %>%
-      filter(statistic %in% statistics)
+    if(!is.null(statistics)){
 
-    p <- p + geom_hline(data = population, aes(yintercept = value),alpha = 0.5,lty = "dashed")
+      if(!statistics %in% unique(population$statistic)){
+        stop("'statistics' not found in 'population'", call. = FALSE)
+      }
+
+      population <- population %>%
+        filter(statistics %in% statistic)
+    }
+
+    if(type == "dist"){
+
+      p <- p + geom_vline(data = population, aes(xintercept = value),alpha = 0.5,lty = "dashed")
+
+    } else {
+
+      p <- p + geom_hline(data = population, aes(yintercept = value),alpha = 0.5,lty = "dashed")
+    }
+
+
 
   }
 

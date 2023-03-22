@@ -15,8 +15,6 @@
 #'
 #' @keywords internal
 #'
-#' @inheritParams monte_carlo
-#'
 #' @importFrom parallel makePSOCKcluster setDefaultCluster clusterEvalQ clusterMap stopCluster
 #' @importFrom sgsR sample_existing
 #' @importFrom dplyr mutate slice_sample

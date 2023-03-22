@@ -5,6 +5,10 @@
 #'
 #' @keywords internal
 #'
+#' @return Tibble with the bootstrapped statistic, bias, std.error,
+#' conf.low, conf/high, bootstrap statistic, whether no varion resulting in an error '1 or 0',
+#' and the bootstrap data 't'.
+#'
 #' @importFrom boot boot
 #' @importFrom broom tidy
 #' @importFrom tibble tibble
@@ -15,9 +19,15 @@ stdboot <- function(x, R = 10000) {
   #--- differences between population ---#
   # Try to compute bootstrapped median and confidence intervals
   tryCatch({
-    bdiffmed <- tidy(boot(x$samples, boot_diffmedian, R, pop = unique(x$population)), conf.int = TRUE) %>%
+
+    b <- boot(x$samples, boot_diffmedian, R, pop = unique(x$population))
+
+    t <- list(round(b$t, digits = 3))
+
+    bdiffmed <- tidy(b, conf.int = TRUE) %>%
       mutate(bootstrap = "diffmed",
-             error = 0)
+             error = 0,
+             t = t)
   }, error = function(e) {
     # If an error occurs, set the "conf.low" and "conf.high" columns to the median of "x$samples"
     diff <- median(x$samples) - unique(x$population)
@@ -26,14 +36,21 @@ stdboot <- function(x, R = 10000) {
                    conf.low = diff,
                    conf.high = diff,
                    bootstrap = "diffmed",
-                   error = 1)
+                   error = 1,
+                   t = t)
   })
 
   # Try to compute bootstrapped median and confidence intervals
   tryCatch({
-    bdiffmean <- tidy(boot(x$samples, boot_diffmean, R, pop = unique(x$population)), conf.int = TRUE) %>%
+
+    b <- boot(x$samples, boot_diffmean, R, pop = unique(x$population))
+
+    t <- list(round(b$t, digits = 3))
+
+    bdiffmean <- tidy(b, conf.int = TRUE) %>%
       mutate(bootstrap = "diffmean",
-             error = 0)
+             error = 0,
+             t = t)
   }, error = function(e) {
     # If an error occurs, set the "conf.low" and "conf.high" columns to the mean of "x$samples"
     diff <- mean(x$samples) - mean(x$population)
@@ -42,15 +59,22 @@ stdboot <- function(x, R = 10000) {
                    conf.low = diff,
                    conf.high = diff,
                    bootstrap = "diffmean",
-                   error = 1)
+                   error = 1,
+                   t = t)
   })
 
   #--- median and mean bootstraps ---#
   # Try to compute bootstrapped median and confidence intervals
   tryCatch({
-    bmed <- tidy(boot(x$samples, boot_median, R), conf.int = TRUE) %>%
+
+    b <- boot(x$samples, boot_median, R)
+
+    t <- list(round(b$t, digits = 3))
+
+    bmed <- tidy(b, conf.int = TRUE) %>%
       mutate(bootstrap = "median",
-             error = 0)
+             error = 0,
+             t = t)
   }, error = function(e) {
     # If an error occurs, set the "conf.low" and "conf.high" columns to the median of "x$samples"
     smed <- median(x$samples)
@@ -59,14 +83,21 @@ stdboot <- function(x, R = 10000) {
                    conf.low = smed,
                    conf.high = smed,
                    bootstrap = "median",
-                   error = 1)
+                   error = 1,
+                   t = t)
   })
 
   # Try to compute bootstrapped median and confidence intervals
   tryCatch({
-    bmean <- tidy(boot(x$samples, boot_mean, R), conf.int = TRUE) %>%
+
+    b <- boot(x$samples, boot_mean, R)
+
+    t <- list(round(b$t, digits = 3))
+
+    bmean <- tidy(b, conf.int = TRUE) %>%
       mutate(bootstrap = "mean",
-             error = 0)
+             error = 0,
+             t = t)
   }, error = function(e) {
     # If an error occurs, set the "conf.low" and "conf.high" columns to the mean of "x$samples"
     smean <- mean(x$samples)
@@ -75,7 +106,8 @@ stdboot <- function(x, R = 10000) {
                     conf.low = smean,
                     conf.high = smean,
                     bootstrap = "mean",
-                    error = 1)
+                    error = 1,
+                    t = t)
   })
 
 

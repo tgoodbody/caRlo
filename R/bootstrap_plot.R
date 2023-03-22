@@ -60,6 +60,7 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       facet_wrap(name ~ statistic, ...) +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, hjust=1))
+
   }
 
   if (type == "bias") {
