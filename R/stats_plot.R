@@ -32,7 +32,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
 
   if (!is.null(statistics)) {
 
-    if(!statistics %in% unique(d$statistic)){
+    if(!all(statistics %in% unique(d$statistic))){
       stop("'statistics' not found in 'data'", call. = FALSE)
     }
 
@@ -97,7 +97,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
 
     if(!is.null(statistics)){
 
-      if(!statistics %in% unique(population$statistic)){
+      if(!all(statistics %in% unique(population$statistic))){
         stop("'statistics' not found in 'population'", call. = FALSE)
       }
 
