@@ -102,7 +102,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       }
 
       population <- population %>%
-        filter(statistics %in% statistic)
+        filter(statistic %in% statistics)
     }
 
     if(type == "dist"){
