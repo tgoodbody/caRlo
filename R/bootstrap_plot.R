@@ -55,8 +55,9 @@ bootstrap_plot <- function(data, statistics = NULL, bootstat = NULL, type = "mea
       ggplot(aes(nSamp, bootstat, ymax = bootstat + std.error, ymin = bootstat - std.error, group = interaction(statistic, method, name, bootstrap), colour = method, fill = method, shape = bootstrap)) +
       scale_color_brewer(palette="Dark2") +
       scale_fill_brewer(palette="Dark2") +
-      geom_ribbon(alpha = 0.35, colour = NA) +
+      geom_ribbon(alpha = 0.38, colour = NA) +
       geom_point() +
+      geom_line() +
       facet_wrap(name ~ statistic, ...) +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, hjust=1))
