@@ -61,7 +61,7 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       scale_fill_brewer(palette="Dark2") +
       geom_line() +
       geom_point(aes(shape = mask)) +
-      geom_ribbon(alpha = 0.5, colour = NA) +
+      geom_ribbon(alpha = 0.38, colour = NA) +
       facet_wrap(name ~ statistic, ...) +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, hjust=1))
