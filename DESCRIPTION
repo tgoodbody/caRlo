@@ -17,6 +17,7 @@ Imports:
     ggplot2,
     ggridges,
     methods,
+    moments,
     parallel,
     SamplingBigData,
     sf,

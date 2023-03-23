@@ -40,6 +40,8 @@ apply_stats <- function(data,
 #'
 #' @param x A numeric vector for which summary statistics are to be computed.
 #'
+#' @importFrom moments skewness kurtosis
+#'
 #' @keywords internal
 #'
 #' @return A named numeric vector with the following components:
@@ -48,6 +50,8 @@ apply_stats <- function(data,
 #' \item{max}{The maximum value of \code{x}}
 #' \item{var}{The variance of \code{x}}
 #' \item{IQR}{The interquartile range of \code{x}}
+#' \item{skew}{The skewness of \code{x}}
+#' \item{kurt}{The kurtosis of \code{x}}
 #' \item{10%}{The 10th percentile of \code{x}}
 #' \item{20%}{The 20th percentile of \code{x}}
 #' \item{30%}{The 30th percentile of \code{x}}
@@ -67,6 +71,8 @@ stdstats <- function(x) {
     max = max(x, na.rm = TRUE),
     var = var(x, na.rm = TRUE),
     IQR = IQR(x, na.rm = TRUE),
+    skew = skewness(x, na.rm = TRUE),
+    kurt = kurtosis(x, na.rm = TRUE),
     quantile(x, probs = seq(0.1, 0.9, by = 0.1), na.rm = TRUE)
   )
 
