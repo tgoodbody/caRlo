@@ -59,8 +59,9 @@ stats_plot <- function(data, population = NULL, statistics = NULL, type = "mean"
       ggplot(aes(nSamp, mean, ymax = mean + stderr, ymin = mean - stderr, group = interaction(method, name, mask), colour = method, fill = method)) +
       scale_color_brewer(palette="Dark2") +
       scale_fill_brewer(palette="Dark2") +
+      geom_line() +
       geom_point(aes(shape = mask)) +
-      geom_ribbon(alpha = 0.15, colour = NA) +
+      geom_ribbon(alpha = 0.5, colour = NA) +
       facet_wrap(name ~ statistic, ...) +
       theme_light() +
       theme(axis.text.x = element_text(angle = 45, hjust=1))
