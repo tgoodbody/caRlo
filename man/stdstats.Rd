@@ -16,6 +16,8 @@ A named numeric vector with the following components:
 \item{max}{The maximum value of \code{x}}
 \item{var}{The variance of \code{x}}
 \item{IQR}{The interquartile range of \code{x}}
+\item{skew}{The skewness of \code{x}}
+\item{kurt}{The kurtosis of \code{x}}
 \item{10\%}{The 10th percentile of \code{x}}
 \item{20\%}{The 20th percentile of \code{x}}
 \item{30\%}{The 30th percentile of \code{x}}

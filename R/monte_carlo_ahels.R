@@ -17,7 +17,7 @@
 
 monte_carlo_ahels <- function(existing, mraster, nFrac = 0.1, matrices = NULL, cores = NULL, ...){
 
-  nSamp <- iter <- method <- NULL
+  nSamp <- iter <- method <- ahels <- NULL
 
   existing_nested <- existing %>%
     mutate(nExist = nSamp) %>%
