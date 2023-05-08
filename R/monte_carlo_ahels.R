@@ -3,7 +3,6 @@
 #'
 #' @param existing A data frame of existing samples
 #' @param mraster A raster object acting as the population
-#' @param nFrac Scalar to use to define the number of samples to add using ahels
 #' @param matrices Population maxtrix
 #' @param cores The number of cores to use for the parallel
 #'     calculation.
@@ -15,7 +14,7 @@
 #'
 #' @export
 
-monte_carlo_ahels <- function(existing, mraster, nFrac = 0.1, matrices = NULL, cores = NULL, ...){
+monte_carlo_ahels <- function(existing, mraster, matrices = NULL, cores = NULL, ...){
 
   nSamp <- iter <- method <- ahels <- NULL
 
@@ -32,13 +31,13 @@ monte_carlo_ahels <- function(existing, mraster, nFrac = 0.1, matrices = NULL, c
     setDefaultCluster(cl)
     clusterEvalQ(NULL, environment())
 
-    existing_nested$ahels <- clusterMap(cl = cl, fun = ahelsmethod, existing = existing_nested$data, MoreArgs = list(nFrac = nFrac, mraster = mr, matrices = matrices, ...))
+    existing_nested$ahels <- clusterMap(cl = cl, fun = ahelsmethod, existing = existing_nested$data, MoreArgs = list(mraster = mr, matrices = matrices, ...))
 
   } else {
 
     if(!is.null(matrices))   matrices <- list(matrices)
 
-    existing_nested$ahels <- mapply(existing = existing_nested$data, FUN = ahelsmethod, MoreArgs = c(nFrac = nFrac, mraster = mr, matrices = matrices, ...), SIMPLIFY = FALSE)
+    existing_nested$ahels <- mapply(existing = existing_nested$data, FUN = ahelsmethod, MoreArgs = c(mraster = mr, matrices = matrices, ...), SIMPLIFY = FALSE)
   }
 
   existing_nested <- existing_nested %>%

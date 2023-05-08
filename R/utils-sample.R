@@ -117,7 +117,7 @@ stdmethods <- function(data,
 #' @importFrom sgsR sample_ahels
 #' @keywords internal
 
-ahelsmethod <- function(existing, nFrac, mraster, matrices, ...){
+ahelsmethod <- function(existing, mraster, matrices, ...){
 
   nExist <- NULL
 
@@ -128,17 +128,8 @@ ahelsmethod <- function(existing, nFrac, mraster, matrices, ...){
   existing <- existing %>%
     select(-nExist)
 
-  if(nFrac < 1){
-
-    out <- sample_ahels(existing = existing, mraster = mraster, nSamp = n*nFrac, matrices = matrices, ...) %>%
+    out <- sample_ahels(existing = existing, mraster = mraster, matrices = matrices, ...) %>%
       mutate(nSampAhels = as.factor(as.character(nrow(.))))
-
-  } else {
-
-    out <- sample_ahels(existing = existing, mraster = mraster, nSamp = nFrac, matrices = matrices, ...) %>%
-      mutate(nSampAhels = as.factor(as.character(nrow(.))))
-
-  }
 
   return(out)
 
